@@ -10,8 +10,9 @@ public class Node {
 
     public enum Direction{UP,RIGHT,DOWN,LEFT}
     Node prev;
-    private final Node[] children = new Node[4];
+//    private final Node[] children = new Node[4];
 
+    private int height;
     private final int[][] state;
 
     private static final int [][] solvedState={
@@ -22,9 +23,10 @@ public class Node {
 
 
 
-    public Node(Node prev, int[][] state) {
+    public Node(Node prev, int[][] state,int height) {
         this.prev = prev;
         this.state = state;
+        this.height=height;
     }
 
     public List<Node> MakeStep(){
@@ -47,7 +49,7 @@ public class Node {
             swap(dir,emptySpacePosition,newState);
 
 //      children[dir.ordinal()]=new Node(this,newState);
-            return new Node(this,newState);
+            return new Node(this,newState,this.height+1);
         }
         return null;
 
@@ -139,4 +141,20 @@ public class Node {
         }
         return hash;
     }
+
+  public Node getPrev() {
+    return prev;
+  }
+
+  public void setPrev(Node prev) {
+    this.prev = prev;
+  }
+
+  public int getHeight() {
+    return height;
+  }
+
+  public void setHeight(int height) {
+    this.height = height;
+  }
 }

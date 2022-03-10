@@ -21,7 +21,8 @@ public class Main {
         Solver.bpa(startingState, writer);
         writer.write("\n------------ BPP ------------\n");
         Solver.bpp(startingState, writer);
-
+        writer.write("\n------------ BPPV ------------\n");
+        Solver.bppv(startingState,20, writer);
         writer.close();
 
     }
