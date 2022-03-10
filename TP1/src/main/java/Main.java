@@ -52,7 +52,7 @@ public class Main {
 
             if (currentNode.isSolved()) {
                 solved = true;
-                break;
+                continue;
             }
             for (Node n:nodes){
                 if (!nodeHashMap.containsKey(n.hashCode())) {
