@@ -10,7 +10,7 @@ public class Node {
 
     public enum Direction{UP,RIGHT,DOWN,LEFT}
     Node prev;
-    private final Node[] children =new Node[4];
+    private final Node[] children = new Node[4];
 
     private final int[][] state;
 
@@ -35,9 +35,8 @@ public class Node {
                 nodes.add(aux);
         }
         return nodes;
-
-
     }
+
     private Node MakeStepDir (Direction dir){
         Pair<Integer,Integer> emptySpacePosition=findEmptySpace();
         if (isValidMove(dir,emptySpacePosition)){
@@ -98,6 +97,8 @@ public class Node {
                 throw new RuntimeException("Not A Direction");
         }
     }
+
+
     private boolean isValidMove(Direction dir,Pair<Integer,Integer> emptySpacePosition){
 
         switch (dir){
