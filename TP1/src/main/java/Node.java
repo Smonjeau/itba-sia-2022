@@ -13,17 +13,12 @@ public class Node {
 //    private final Node[] children = new Node[4];
 
     private int height;
-    private final int[][] state;
-
-    private static final int [][] solvedState={
-            {1,2,3},
-            {4,5,6},
-            {7,8,0}
-    };
+    private final PuzzleState state;
+    private double orderValue;
 
 
 
-    public Node(Node prev, int[][] state,int height) {
+    public Node(Node prev, PuzzleState state, int height) {
         this.prev = prev;
         this.state = state;
         this.height=height;
@@ -44,12 +39,12 @@ public class Node {
         if (isValidMove(dir,emptySpacePosition)){
             int[][] newState=new int[3][3];
             for(int i = 0; i < newState.length; i++)
-                newState[i] = state[i].clone();
+                newState[i] = state.getRowAt(i).clone();
 
             swap(dir,emptySpacePosition,newState);
 
 //      children[dir.ordinal()]=new Node(this,newState);
-            return new Node(this,newState,this.height+1);
+            return new Node(this,new PuzzleState(newState),this.height+1);
         }
         return null;
 
@@ -58,17 +53,19 @@ public class Node {
     }
 
     public boolean isSolved(){
-        return Arrays.deepEquals(state,solvedState);
+        return state.isGoalState();
     }
 
 
     private Pair<Integer,Integer> findEmptySpace(){
-        for (int i = 0; i <state.length ; i++) {
-            for (int j = 0; j < state[i].length; j++){
-                if (state[i][j]==0)
+        int[][] board = state.getBoard();
+        for (int i = 0; i < board.length ; i++) {
+            for (int j = 0; j < board[i].length; j++){
+                if (board[i][j]==0)
                     return new Pair(i,j);
             }
         }
+
         throw new RuntimeException("no empty space");
     }
 
@@ -126,35 +123,50 @@ public class Node {
         return false;
     }
 
-    public int[][] getState() {
-        return state;
+    public String stateToString() {
+        StringBuilder stringBuilder = new StringBuilder();
+        int[][] board = state.getBoard();
+        for (int[] ints : board) {
+            stringBuilder.append("| ");
+            for (int anInt : ints) {
+                stringBuilder.append(anInt).append(" | ");
+            }
+            stringBuilder.append("\n");
+        }
+        return stringBuilder.toString();
     }
 
     @Override
     public int hashCode() {
-        int hash=0;
-        for (int[] ints : state) {
-            for (int anInt : ints) {
-                hash *= 10;
-                hash += anInt;
-            }
-        }
-        return hash;
+        return state.hashCode();
     }
 
-  public Node getPrev() {
-    return prev;
-  }
+    public Node getPrev() {
+        return prev;
+    }
 
-  public void setPrev(Node prev) {
-    this.prev = prev;
-  }
+    public void setPrev(Node prev) {
+        this.prev = prev;
+    }
 
-  public int getHeight() {
-    return height;
-  }
+    public int getHeight() {
+        return height;
+    }
 
-  public void setHeight(int height) {
-    this.height = height;
-  }
+    public void setHeight(int height) {
+        this.height = height;
+    }
+
+    public PuzzleState getState() {
+        return state;
+    }
+
+    public void setOrderValue(double value) {
+        orderValue = value;
+    }
+
+    public double getOrderValue() {
+        return orderValue;
+    }
+
 }
