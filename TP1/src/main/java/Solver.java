@@ -85,14 +85,11 @@ public class Solver {
         Stack<Node> nodeStack = new Stack<>();
         nodeStack.add(root);
         boolean solved = false;
-        int counter = 0;
+
 
 
         while (!solved){
-            if (counter == 1000){
-                counter =- 1;
-            }
-            counter++;
+
 
             currentNode=nodeStack.pop();
             if (currentNode.isSolved()) {
@@ -109,39 +106,67 @@ public class Solver {
                         Node aux=nodeHashMap.get(n.hashCode());
                         aux.setHeight(currentNode.getHeight()+1);
                         aux.setPrev(currentNode);
-                        }
+                        nodeStack.add(n);
+                    }
                 }
             }
 
             if (nodeStack.empty()){
-                return new Response(false,0,nodeHashMap.size(),currentNode);
+                return new Response(currentNode,false,0, nodeHashMap.size());
             }
 
         }
 
-        return new Response(true, nodeStack.size(), nodeHashMap.size(), currentNode);
-
+       return new Response(currentNode,true, nodeStack.size(),nodeHashMap.size()-nodeStack.size());
     }
 
     public static Response bppv(PuzzleState startingState, int guess) {
-        int max=guess;
-        int min=0;
-        int current=max;
+//        int max=guess;
+//        int min=0;
+//        int current=max;
         Response aux=null;
         int cumulativeExploredNodes=0;
-        while (max!=(min+1)||max==0){
+//        while (max>(min+1)||max==0){
+//            aux=bppl(startingState, current);
+//            cumulativeExploredNodes+=aux.getExploredNodes();
+//            if (!aux.isSolved())
+//                max=current;
+//            else
+//                min=current;
+//            current=(min+max)/2;
+//
+//        }
+
+        int current=guess;
+        boolean solvable=true;
+        List<Response> responses=new ArrayList<>();
+        Response lastSolvedResponse=null;
+        while (solvable){
             aux=bppl(startingState, current);
             cumulativeExploredNodes+=aux.getExploredNodes();
-            if (!aux.isSolved())
-                max=current;
-            else
-                min=current;
-            current=(min+max)/2;
+            if (!aux.isSolved()||aux.getNode().getHeight()==0){
+                solvable=false;
+
+            }else {
+                if (current==aux.getNode().getHeight())
+                    current--;
+                else {
+                    current=aux.getNode().getHeight();
+
+                }
+                lastSolvedResponse=aux;
+
+            }
+
+
 
         }
-//        bppl(startingState, max,true, writer, start);
-        if (aux!=null)
-            aux.setExploredNodes(cumulativeExploredNodes);
+
+        if (lastSolvedResponse!=null){
+            lastSolvedResponse.setExploredNodes(cumulativeExploredNodes);
+            return lastSolvedResponse;
+        }
+        aux.setExploredNodes(cumulativeExploredNodes);
         return aux;
     }
 
@@ -188,7 +213,7 @@ public class Solver {
 		double heuristicValue = heuristicProvider.heuristic(node.getState());
 
 		// como es costo uniforme entonces height es igual al costo
-		return heuristicValue + node.getHeight(); 
+		return heuristicValue + node.getHeight();
 	}
 
 

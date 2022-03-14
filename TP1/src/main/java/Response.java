@@ -7,9 +7,6 @@ public class Response {
 
     public Response() {}
 
-    public Response(boolean solved, int frontierNodes, int exploredNodes, Node node) {
-        this.solved = solved;
-    }
 
     public Response(Node finalNode, boolean solved, int frontierNodes, int exploredNodes) {
         this.solved = solved;
