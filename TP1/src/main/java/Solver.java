@@ -87,57 +87,57 @@ public class Solver {
     }
 
 	private static int bppl(PuzzleState startingState,int limit,boolean print, BufferedWriter writer, Long start) throws IOException {
-        if (start == null && print)
-            start = System.nanoTime();
+    if (start == null && print)
+        start = System.nanoTime();
 
-		Map<Integer,Node> nodeHashMap = new HashMap<>();
-		Node root = new Node(null,startingState,0);
-		Node currentNode = null;
-		Stack<Node> nodeStack = new Stack<>();
-		nodeStack.add(root);
-		boolean solved = false;
-		int counter = 0;
+    Map<Integer,Node> nodeHashMap = new HashMap<>();
+    Node root = new Node(null,startingState,0);
+    Node currentNode = null;
+    Stack<Node> nodeStack = new Stack<>();
+    nodeStack.add(root);
+    boolean solved = false;
+    int counter = 0;
 
 
-		while (!solved){
-		if (counter == 1000){
-			counter =- 1;
-		}
-		counter++;
-
-		currentNode=nodeStack.pop();
-		if (currentNode.isSolved()) {
-			solved = true;
-			continue;
-		}
-		if (currentNode.getHeight()<limit) {
-			List<Node> nodes = currentNode.MakeStep();
-			for (Node n:nodes){
-			if (!nodeHashMap.containsKey(n.hashCode())) {
-				nodeHashMap.put(n.hashCode(),n);
-				nodeStack.add(n);
-			}else if (nodeHashMap.get(n.hashCode()).getHeight()>(currentNode.getHeight()+1)){
-				Node aux=nodeHashMap.get(n.hashCode());
-				aux.setHeight(currentNode.getHeight()+1);
-				aux.setPrev(currentNode);
-			}
-			}
-		}
-
-		if (nodeStack.empty()){
-            if (print)
-	            writer.write("Cannot Find Solution\n");
-			return -1;
-		}
-
-		}
-		if (print) {
-            long end = System.nanoTime();
-            printSolution(currentNode, writer, nodeStack.size(), nodeHashMap.size() - nodeStack.size(), end - start);
+    while (!solved){
+        if (counter == 1000){
+            counter =- 1;
         }
-		return currentNode.getHeight();
+        counter++;
 
-	}
+        currentNode=nodeStack.pop();
+        if (currentNode.isSolved()) {
+            solved = true;
+            continue;
+        }
+        if (currentNode.getHeight()<limit) {
+            List<Node> nodes = currentNode.MakeStep();
+            for (Node n:nodes){
+                if (!nodeHashMap.containsKey(n.hashCode())) {
+                    nodeHashMap.put(n.hashCode(),n);
+                    nodeStack.add(n);
+                }else if (nodeHashMap.get(n.hashCode()).getHeight()>(currentNode.getHeight()+1)){
+                    Node aux=nodeHashMap.get(n.hashCode());
+                    aux.setHeight(currentNode.getHeight()+1);
+                    aux.setPrev(currentNode);
+                    }
+            }
+        }
+
+        if (nodeStack.empty()){
+            if (print)
+                writer.write("Cannot Find Solution\n");
+            return -1;
+        }
+
+    }
+    if (print) {
+        long end = System.nanoTime();
+        printSolution(currentNode, writer, nodeStack.size(), nodeHashMap.size() - nodeStack.size(), end - start);
+    }
+    return currentNode.getHeight();
+
+}
 
     public static void bppv(PuzzleState startingState,int guess, BufferedWriter writer) throws IOException {
         long start = System.nanoTime();
@@ -145,12 +145,12 @@ public class Solver {
         int min=0;
         int current=max;
         while (max!=(min+1)||max==0){
-          int aux=bppl(startingState, current,false, writer, null);
-          if (aux!=-1)
-            max=current;
-          else
-            min=current;
-          current=(min+max)/2;
+            int aux=bppl(startingState, current,false, writer, null);
+            if (aux!=-1)
+                max=current;
+            else
+                min=current;
+            current=(min+max)/2;
 
         }
         bppl(startingState, max,true, writer, start);
@@ -206,7 +206,7 @@ public class Solver {
 
 		// como es costo uniforme entonces height es igual al costo
         // System.out.println(heuristicValue+", "+node.getHeight());
-		return heuristicValue + node.getHeight(); 
+		return heuristicValue + node.getHeight();
 	}
 
 
@@ -368,11 +368,5 @@ public class Solver {
 
 
 
-    private static class Response {
-        private boolean solved = false;
-        private int frontierNodes = 1;
-        private int exploredNodes = 0;
 
-
-    }
 }
