@@ -138,7 +138,7 @@ public class Solver {
 //        else
 //            printSolution(currentNode, writer, nodeStack.size(), nodeHashMap.size() - nodeStack.size(), end - start);
 //    }
-    return new Response(true,nodeStack.size(),nodeHashMap.size(), currentNode);
+    return new Response(true,nodeStack.size(),nodeHashMap.size()-nodeStack.size(), currentNode);
 
 }
 
