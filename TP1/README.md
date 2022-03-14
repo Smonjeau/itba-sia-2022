@@ -87,7 +87,7 @@ Los posibles parámetros son:
 
 ## Ejecución
 ```bash
-java -jar itba-sia-2022-g18.jar <parameters.json>
+java -jar itba-sia-2022-g18.jar <config.json>
 ```
 
 
