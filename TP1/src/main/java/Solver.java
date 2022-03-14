@@ -37,7 +37,6 @@ public class Solver {
             }
 
 
-
         }
         long end = System.nanoTime();
         printSolution(currentNode, writer, nodeQueue.size(), nodeHashMap.size() - nodeQueue.size(), end - start);
@@ -218,40 +217,44 @@ public class Solver {
 
     private static void iterateNodeList(List<Node> list,BufferedWriter writer,Heuristic heuristic, Map<Integer,Node> nodeHashMap,long start, Response response) throws IOException {
 
+        while(!list.isEmpty()){
 
-
-        Node selectedNode = list.get(0);
-        for(Node n:list){
-            if(heuristic.heuristic(selectedNode.getState()) >
-                    heuristic.heuristic(n.getState())){
-                selectedNode = n;
+            Node selectedNode = list.get(0);
+            for(Node n:list){
+                if(heuristic.heuristic(selectedNode.getState()) >
+                        heuristic.heuristic(n.getState())){
+                    selectedNode = n;
+                }
+            }
+            if(selectedNode.isSolved()){
+                long end = System.nanoTime();
+                response.solved=true;
+                printSolution(selectedNode,writer,response.frontierNodes-1,response.exploredNodes,end-start);
+                return;
             }
 
+            list.clear();
+            if(!nodeHashMap.containsKey(selectedNode.hashCode())){
+                nodeHashMap.put(selectedNode.hashCode(),selectedNode);
+                List<Node> successors = selectedNode.MakeStep();
+                response.exploredNodes++;
+                response.frontierNodes--;
+                response.frontierNodes += successors.size();
+                list.addAll(successors);
+            }
         }
 
-        if(selectedNode.isSolved()){
-            long end = System.nanoTime();
-            response.solved=true;
-            printSolution(selectedNode,writer,response.frontierNodes-1,response.exploredNodes,end-start);
-            return;
-        }
 
-        if(!nodeHashMap.containsKey(selectedNode.hashCode())){
-            nodeHashMap.put(selectedNode.hashCode(),selectedNode);
-            List<Node> successors = selectedNode.MakeStep();
-            response.exploredNodes++;
-            response.frontierNodes--;
-            response.frontierNodes += successors.size();
-            iterateNodeList(successors, writer, heuristic,nodeHashMap,start,response);
-
-        }
 
 
 
     }
 
-    private static void  iterateNodeListWithBacktracking(List<Node> list,BufferedWriter writer,Heuristic heuristic, Map<Integer,Node> nodeHashMap,long start,Response response) throws IOException {
+    private static void iterateNodeListWithBacktracking(List<Node> list, BufferedWriter writer,Heuristic heuristic, Map<Integer,Node> nodeHashMap,long start,Response response) throws IOException {
 
+
+
+        Stack<List<Node>> aux = new Stack<>();
         while(!list.isEmpty() && !response.solved){
             Node selectedNode = list.get(0);
             for(Node n:list){
@@ -277,15 +280,24 @@ public class Solver {
                 List<Node> successors = selectedNode.MakeStep();
                 response.frontierNodes += successors.size();
 
-                iterateNodeListWithBacktracking(successors, writer, heuristic,nodeHashMap,start,response);
+              //  iterateNodeListWithBacktracking(successors, writer, heuristic,nodeHashMap,start,response);
+
+                List<Node> temp = new ArrayList<>(list);
+                aux.push(temp);
+                list.clear();
+                list.addAll(successors);
+
+            }else {
+                list.remove(selectedNode);
+                if(list.isEmpty() && !aux.isEmpty())
+                    list = aux.pop();
 
             }
 
-            list.remove(selectedNode);
-
-
 
         }
+
+
 
     }
     public static void localHeuristic(PuzzleState initialState, BufferedWriter writer, Heuristic heuristic, boolean backtracking) throws IOException{
@@ -297,13 +309,13 @@ public class Solver {
         List<Node> list = new ArrayList<>();
         list.add(root);
 
-        Response response = new Response();
+       // Response response = new Response(false,1,0);
 
         if (backtracking)
             iterateNodeListWithBacktracking(list,writer,heuristic,nodeHashMap,start,response);
         else
             iterateNodeList(list,writer,heuristic,nodeHashMap,start,response);
-        if(!response.solved) {
+        if(!response.isSolved()) {
             writer.write("Cannot Find Solution\n");
         }
 
