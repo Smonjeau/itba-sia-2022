@@ -288,6 +288,7 @@ public class Solver {
             return new Response(false);
         }
 
+        response.frontierNodes--;
         return response;
 
     }
