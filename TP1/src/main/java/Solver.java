@@ -148,8 +148,10 @@ public class Solver {
         int min=0;
         int current=max;
         Response aux=null;
+        int cumulativeExploredNodes=0;
         while (max!=(min+1)||max==0){
             aux=bppl(startingState, current);
+            cumulativeExploredNodes+=aux.getExploredNodes();
             if (!aux.isSolved())
                 max=current;
             else
@@ -158,6 +160,8 @@ public class Solver {
 
         }
 //        bppl(startingState, max,true, writer, start);
+        if (aux!=null)
+            aux.setExploredNodes(cumulativeExploredNodes);
         return aux;
     }
 
