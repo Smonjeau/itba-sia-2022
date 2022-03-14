@@ -141,12 +141,17 @@ public class Solver {
         boolean solvable=true;
         List<Response> responses=new ArrayList<>();
         Response lastSolvedResponse=null;
+        boolean incremented=false;
         while (solvable){
             aux=bppl(startingState, current);
             cumulativeExploredNodes+=aux.getExploredNodes();
             if (!aux.isSolved()||aux.getNode().getHeight()==0){
-                solvable=false;
+                if((aux.getNode().getHeight()>=31&&incremented)||lastSolvedResponse!=null)
+                    solvable=false;
 
+
+                current++;
+                incremented=true;
             }else {
                 if (current==aux.getNode().getHeight())
                     current--;
