@@ -86,9 +86,9 @@ public class Solver {
 
     }
 
-	private static int bppl(PuzzleState startingState,int limit,boolean print, BufferedWriter writer, Long start) throws IOException {
-    if (start == null && print)
-        start = System.nanoTime();
+	private static Response bppl(PuzzleState startingState,int limit) throws IOException {
+//    if (start == null && print)
+//        start = System.nanoTime();
 
     Map<Integer,Node> nodeHashMap = new HashMap<>();
     Node root = new Node(null,startingState,0);
@@ -125,35 +125,40 @@ public class Solver {
         }
 
         if (nodeStack.empty()){
-            if (print)
-                writer.write("Cannot Find Solution\n");
-            return -1;
+//            if (print)
+//                writer.write("Cannot Find Solution\n");
+            return new Response(false,0,nodeHashMap.size(),currentNode);
         }
 
     }
-    if (print) {
-        long end = System.nanoTime();
-        printSolution(currentNode, writer, nodeStack.size(), nodeHashMap.size() - nodeStack.size(), end - start);
-    }
-    return currentNode.getHeight();
+//    if (print) {
+//        long end = System.nanoTime();
+//        if (response!=null)
+//            printSolution(currentNode, writer, response.getFrontierNodes(), response.getExploredNodes(), end - start);
+//        else
+//            printSolution(currentNode, writer, nodeStack.size(), nodeHashMap.size() - nodeStack.size(), end - start);
+//    }
+    return new Response(true,nodeStack.size(),nodeHashMap.size(), currentNode);
 
 }
 
-    public static void bppv(PuzzleState startingState,int guess, BufferedWriter writer) throws IOException {
-        long start = System.nanoTime();
+    public static Response bppv(PuzzleState startingState,int guess) throws IOException {
+//        long start = System.nanoTime();
         int max=guess;
         int min=0;
         int current=max;
+        Response aux=null;
         while (max!=(min+1)||max==0){
-            int aux=bppl(startingState, current,false, writer, null);
-            if (aux!=-1)
+            aux=bppl(startingState, current);
+            if (!aux.isSolved())
                 max=current;
             else
                 min=current;
             current=(min+max)/2;
 
         }
-        bppl(startingState, max,true, writer, start);
+//        bppl(startingState, max,true, writer, start);
+        return aux;
     }
 
 	public static void aStar(PuzzleState puzzleState, BufferedWriter writer, Heuristic heuristicProvider) throws IOException {

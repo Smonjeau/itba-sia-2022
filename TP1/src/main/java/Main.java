@@ -48,7 +48,7 @@ public class Main {
                 System.out.println("Missing guess value!");
                 return;
             }
-            Solver.bppv(startingState, parameters.getGuess(), writer);
+            Solver.bppv(startingState, parameters.getGuess());
         } else if ("A*".equals(alg)) {
             if (parameters.getHeuristic() == null) {
                 System.out.println("Missing heuristic parameter!");

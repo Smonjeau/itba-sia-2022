@@ -2,13 +2,13 @@ public class Response {
     private boolean solved = false;
     private int frontierNodes = 1;
     private int exploredNodes = 0;
-    private int height=-1;
+    private Node node=null;
 
-    public Response(boolean solved, int frontierNodes, int exploredNodes, int height) {
+    public Response(boolean solved, int frontierNodes, int exploredNodes,Node node) {
         this.solved = solved;
         this.frontierNodes = frontierNodes;
         this.exploredNodes = exploredNodes;
-        this.height = height;
+        this.node = node;
     }
 
     public boolean isSolved() {
@@ -35,11 +35,11 @@ public class Response {
         this.exploredNodes = exploredNodes;
     }
 
-    public int getHeight() {
-        return height;
+    public Node getNode() {
+        return node;
     }
 
-    public void setHeight(int height) {
-        this.height = height;
+    public void setNode(Node node) {
+        this.node = node;
     }
 }
