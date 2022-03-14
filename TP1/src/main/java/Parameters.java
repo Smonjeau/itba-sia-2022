@@ -19,10 +19,6 @@ public class Parameters {
         return algorithm;
     }
 
-    public void setAlgorithm(String algorithm) {
-        this.algorithm = algorithm;
-    }
-
     public String getHeuristic() {
         return heuristic;
     }
@@ -33,8 +29,8 @@ public class Parameters {
             case "manhattan":
                 heuristicProvider = new Manhattan();
                 break;
-            case "worst_case":
-                heuristicProvider = new ManhattanWorstCase();
+            case "enforced order":
+                heuristicProvider = new EnforcedOrder();
                 break;
             case "misplaced":
                 heuristicProvider = new Misplaced();
@@ -54,21 +50,13 @@ public class Parameters {
         return guess;
     }
 
-    public void setGuess(Integer guess) {
-        this.guess = guess;
-    }
-
     public int[][] getBoard() {
         return board;
     }
 
-    public void setBoard(int[][] board) {
-        this.board = board;
-    }
-
     @Override
     public String toString() {
-        return "Parametros: " +
+        return "Parámetros: " +
                 "algorithm='" + algorithm + '\'' +
                 ", heuristic='" + heuristic + '\'' +
                 ", guess=" + guess +

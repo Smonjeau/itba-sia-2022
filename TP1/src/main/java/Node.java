@@ -1,5 +1,4 @@
 import java.util.ArrayList;
-
 import java.util.List;
 
 
@@ -8,7 +7,6 @@ public class Node {
 
     public enum Direction{UP,RIGHT,DOWN,LEFT}
     Node prev;
-//    private final Node[] children = new Node[4];
 
     private int height;
     private final PuzzleState state;

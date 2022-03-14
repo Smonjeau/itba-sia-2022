@@ -1,10 +1,9 @@
 {
-  "algorithm": "local-bt",
+  "algorithm": "BPP",
   "heuristic": "misplaced",
-  "board":  [
-    [8, 1, 2],
-    [0, 4, 3],
-    [7, 6, 5]
-  ],
-  "guess": 31
+  "board": [
+    [3, 4, 6],
+    [2, 5, 1],
+    [0, 8, 7]
+  ]
 }

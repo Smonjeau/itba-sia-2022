@@ -21,7 +21,7 @@ public class Solver {
 
             if (currentNode.isSolved()) {
                 solved = true;
-                break;
+                continue;
             }
 
             for (Node n:nodes){
@@ -186,9 +186,6 @@ public class Solver {
                 node.setPrev(currentNode);
                 queue.add(node);
             }
-
-//            writer.write("Heuristic: "+queue.peek().getOrderValue()+"\n"+queue.peek().stateToString()+"\n");
-//            writer.write("\n-------------------------\n");
 		}
 
         if (!found) {
@@ -282,7 +279,7 @@ public class Solver {
         }
 
     }
-    public static void localHeuristic (PuzzleState initialState, BufferedWriter writer, Heuristic heuristic, boolean backtracking) throws IOException{
+    public static void localHeuristic(PuzzleState initialState, BufferedWriter writer, Heuristic heuristic, boolean backtracking) throws IOException{
 
         long start = System.nanoTime();
 
@@ -350,7 +347,7 @@ public class Solver {
         writer.newLine();
         writer.write("Cantidad de nodos explorados: " + exploredNodesAmount);
         writer.newLine();
-        writer.write("Cantidad de nodos de la solucion: " + currentNode.getHeight());
+        writer.write("Cantidad de nodos de la solución: " + currentNode.getHeight());
         writer.newLine();
         writer.write("Tiempo de ejecución (milisegundos): "+(duration / 1000000));
         writer.newLine();
