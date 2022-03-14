@@ -6,11 +6,11 @@ Se utilizan las estrategias de busqueda: BPA, BPP, BPPV, Heurística Local, Heur
 Los parámetros de ejecución se leeran del archivo `sia.properties` dentro de la carpeta `resources`.
 Los posibles parámetros son:
 
-| Parameter     | Type     | Values                                         | Description                                                                       |
-| :-------------| :------- | :----------------------------------------------| :-------------------------------------------------------------------------------- |
-| `alg`         | `String` | `BPA`, `BPP`, `BPPV`, `local`, `global`, `A*`  | Estrategía de busqueda que se utilizará                                           |
-| `guess`       | `int`    |                                                | Limite inicial utilizado en la estrategía BPPV                                    |
-| `heuristic`   | `String` | `manhattan`, `misplaced`, `worst_case`         | Heuristica ha utilizar. Es necesario para las estrategías `local`, `global`, `A*` |
+| Parameter     | Type     | Values                                        | Description                                                                       |
+| :-------------| :------- |:----------------------------------------------| :-------------------------------------------------------------------------------- |
+| `alg`         | `String` | `BPA`, `BPP`, `BPPV`, `local`, `global`, `A*` | Estrategía de busqueda que se utilizará                                           |
+| `guess`       | `int`    |                                               | Limite inicial utilizado en la estrategía BPPV                                    |
+| `heuristic`   | `String` | `manhattan`, `misplaced`, `enforced order`    | Heuristica ha utilizar. Es necesario para las estrategías `local`, `global`, `A*` |
 
 
 

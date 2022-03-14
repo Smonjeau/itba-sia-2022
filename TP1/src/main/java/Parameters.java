@@ -29,8 +29,8 @@ public class Parameters {
             case "manhattan":
                 heuristicProvider = new Manhattan();
                 break;
-            case "worst_case":
-                heuristicProvider = new ManhattanWorstCase();
+            case "enforced order":
+                heuristicProvider = new EnforcedOrder();
                 break;
             case "misplaced":
                 heuristicProvider = new Misplaced();
