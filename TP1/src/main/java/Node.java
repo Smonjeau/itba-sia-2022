@@ -1,7 +1,7 @@
 import javafx.util.Pair;
 
 import java.util.ArrayList;
-import java.util.Arrays;
+
 import java.util.List;
 
 
@@ -20,8 +20,8 @@ public class Node {
 
     public Node(Node prev, PuzzleState state, int height) {
         this.prev = prev;
-        this.state = state;
         this.height=height;
+        this.state  = state;
     }
 
     public List<Node> MakeStep(){
@@ -51,6 +51,7 @@ public class Node {
 
 
     }
+
 
     public boolean isSolved(){
         return state.isGoalState();

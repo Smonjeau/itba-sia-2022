@@ -9,7 +9,7 @@ Los posibles parámetros son:
 
 | Parameter     | Type     | Values                                         | Description                                                                       |
 | :-------------| :------- | :----------------------------------------------| :-------------------------------------------------------------------------------- |
-| `algorithm`   | `String` | `BPA`, `BPP`, `BPPV`, `local`, `global`, `A*`  | Estrategía de busqueda que se utilizará                                           |
+| `algorithm`   | `String` | `BPA`, `BPP`, `BPPV`, `local`, `local-bt`, `global`, `A*`  | Estrategía de busqueda que se utilizará                                           |
 | `guess`       | `int`    |                                                | Limite inicial utilizado en la estrategía BPPV                                    |
 | `heuristic`   | `String` | `manhattan`, `misplaced`, `worst_case`         | Heuristica ha utilizar. Es necesario para las estrategías `local`, `global`, `A*` |
 

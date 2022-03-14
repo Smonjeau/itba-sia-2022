@@ -63,9 +63,29 @@ public class Main {
 
             Solver.aStar(startingState, writer, heuristicProvider);
         } else if ("local".equals(alg)) {
-            // TODO insert local solution
-        } else if ("global".equals(alg)) {
-            // TODO insert global solution
+            Heuristic heuristicProvider = parameters.getHeuristicProvider();
+            if (heuristicProvider == null) {
+                System.out.println("Invalid heuristic parameter!");
+                return;
+            }
+
+            Solver.localHeuristic(startingState,writer,heuristicProvider,false);
+        }else if("local-bt".equals(alg)){
+            Heuristic heuristicProvider = parameters.getHeuristicProvider();
+            if (heuristicProvider == null) {
+                System.out.println("Invalid heuristic parameter!");
+                return;
+            }
+            Solver.localHeuristic(startingState, writer,heuristicProvider,true);
+        }
+
+        else if ("global".equals(alg)) {
+            Heuristic heuristicProvider = parameters.getHeuristicProvider();
+            if (heuristicProvider == null) {
+                System.out.println("Invalid heuristic parameter!");
+                return;
+            }
+            Solver.globalHeuristic(startingState,writer,heuristicProvider);
         } else {
             System.out.println("Invalid algorithm argument!");
             return;
@@ -73,6 +93,7 @@ public class Main {
 
         writer.close();
     }
+
 
 
 

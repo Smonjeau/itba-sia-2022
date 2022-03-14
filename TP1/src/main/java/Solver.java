@@ -46,7 +46,7 @@ public class Solver {
     public static void bpp(PuzzleState startingState, BufferedWriter writer) throws IOException {
         long start = System.nanoTime();
         Map<Integer,Node> nodeHashMap = new HashMap<>();
-        Node root = new Node(null,startingState,0);
+        Node root = new Node(null, startingState,0);
         Node currentNode = null;
         Stack<Node> nodeStack = new Stack<>();
         nodeStack.add(root);
@@ -209,6 +209,141 @@ public class Solver {
 		return heuristicValue + node.getHeight(); 
 	}
 
+
+    private static void iterateNodeList(List<Node> list,BufferedWriter writer,Heuristic heuristic, Map<Integer,Node> nodeHashMap,long start, Response response) throws IOException {
+
+
+
+        Node selectedNode = list.get(0);
+        for(Node n:list){
+            if(heuristic.heuristic(selectedNode.getState()) >
+                    heuristic.heuristic(n.getState())){
+                selectedNode = n;
+            }
+
+        }
+
+        if(selectedNode.isSolved()){
+            long end = System.nanoTime();
+            response.solved=true;
+            printSolution(selectedNode,writer,response.frontierNodes-1,response.exploredNodes,end-start);
+            return;
+        }
+
+        if(!nodeHashMap.containsKey(selectedNode.hashCode())){
+            nodeHashMap.put(selectedNode.hashCode(),selectedNode);
+            List<Node> successors = selectedNode.MakeStep();
+            response.exploredNodes++;
+            response.frontierNodes--;
+            response.frontierNodes += successors.size();
+            iterateNodeList(successors, writer, heuristic,nodeHashMap,start,response);
+
+        }
+
+
+
+    }
+
+    private static void  iterateNodeListWithBacktracking(List<Node> list,BufferedWriter writer,Heuristic heuristic, Map<Integer,Node> nodeHashMap,long start,Response response) throws IOException {
+
+        while(!list.isEmpty() && !response.solved){
+            Node selectedNode = list.get(0);
+            for(Node n:list){
+                if(heuristic.heuristic(selectedNode.getState()) >
+                        heuristic.heuristic(n.getState())){
+                    selectedNode = n;
+                }
+
+            }
+
+            if(selectedNode.isSolved()){
+                response.solved=true;
+                long end = System.nanoTime();
+
+                printSolution(selectedNode,writer,response.frontierNodes-1, response.exploredNodes, end-start);
+                return;
+            }
+
+            if(!nodeHashMap.containsKey(selectedNode.hashCode())){
+                nodeHashMap.put(selectedNode.hashCode(),selectedNode);
+                response.exploredNodes++;
+                response.frontierNodes--;
+                List<Node> successors = selectedNode.MakeStep();
+                response.frontierNodes += successors.size();
+
+                iterateNodeListWithBacktracking(successors, writer, heuristic,nodeHashMap,start,response);
+
+            }
+
+            list.remove(selectedNode);
+
+
+
+        }
+
+    }
+    public static void localHeuristic (PuzzleState initialState, BufferedWriter writer, Heuristic heuristic, boolean backtracking) throws IOException{
+
+        long start = System.nanoTime();
+
+        Node root = new Node(null, initialState,0);
+        Map<Integer,Node> nodeHashMap = new HashMap<>();
+        List<Node> list = new ArrayList<>();
+        list.add(root);
+
+        Response response = new Response();
+
+        if (backtracking)
+            iterateNodeListWithBacktracking(list,writer,heuristic,nodeHashMap,start,response);
+        else
+            iterateNodeList(list,writer,heuristic,nodeHashMap,start,response);
+        if(!response.solved) {
+            writer.write("Cannot Find Solution\n");
+        }
+
+    }
+
+
+    public static void globalHeuristic (PuzzleState initialState, BufferedWriter writer, Heuristic heuristic) throws IOException {
+        boolean foundSolution =false;
+        Map<Integer,Node> nodeHashMap = new HashMap<>();
+        long start = System.nanoTime();
+        Node root = new Node(null,initialState,0);
+        List<Node> frontier = new ArrayList<>();
+        frontier.add(root);
+        Node aux;
+        int exploredNodesAmount=0;
+        while(!frontier.isEmpty()){
+            aux = frontier.remove(0);
+            if(aux.isSolved()) {
+                foundSolution = true;
+
+                printSolution(aux, writer, frontier.size(), exploredNodesAmount ,System.nanoTime() - start);
+                break;
+            }
+
+            if(!nodeHashMap.containsKey(aux.hashCode())){
+                nodeHashMap.put(aux.hashCode(),aux);
+                List<Node> successors = aux.MakeStep();
+                exploredNodesAmount++;
+                frontier.addAll(successors);
+
+                frontier.sort((o1, o2) -> (int) (heuristic.heuristic(o1.getState())
+                        - heuristic.heuristic(o2.getState())));
+            }
+
+
+
+        }
+
+        if(!foundSolution){
+            writer.write("Cannot find solution");
+        }
+
+    }
+
+
+
     private static void printSolution(Node currentNode, BufferedWriter writer, int frontierNodesAmount, int exploredNodesAmount, long duration) throws IOException {
         writer.write("Solución Encontrada\n");
         writer.write("Cantidad de nodos frontera: " + frontierNodesAmount);
@@ -229,5 +364,15 @@ public class Solver {
         }
         stringBuilder.insert(0, currentNode.stateToString()+"\n");
         writer.write(stringBuilder.toString());
+    }
+
+
+
+    private static class Response {
+        private boolean solved = false;
+        private int frontierNodes = 1;
+        private int exploredNodes = 0;
+
+
     }
 }
