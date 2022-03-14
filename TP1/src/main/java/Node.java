@@ -1,5 +1,3 @@
-import javafx.util.Pair;
-
 import java.util.ArrayList;
 
 import java.util.List;
@@ -35,7 +33,7 @@ public class Node {
     }
 
     private Node MakeStepDir (Direction dir){
-        Pair<Integer,Integer> emptySpacePosition=findEmptySpace();
+        Pair emptySpacePosition=findEmptySpace();
         if (isValidMove(dir,emptySpacePosition)){
             int[][] newState=new int[3][3];
             for(int i = 0; i < newState.length; i++)
@@ -58,7 +56,7 @@ public class Node {
     }
 
 
-    private Pair<Integer,Integer> findEmptySpace(){
+    private Pair findEmptySpace(){
         int[][] board = state.getBoard();
         for (int i = 0; i < board.length ; i++) {
             for (int j = 0; j < board[i].length; j++){
@@ -70,7 +68,7 @@ public class Node {
         throw new RuntimeException("no empty space");
     }
 
-    private void swap(Direction dir,Pair<Integer,Integer> emptySpacePosition,int[][]matrix){
+    private void swap(Direction dir,Pair emptySpacePosition,int[][]matrix){
         int aux;
         switch (dir) {
             case UP:
@@ -99,7 +97,7 @@ public class Node {
     }
 
 
-    private boolean isValidMove(Direction dir,Pair<Integer,Integer> emptySpacePosition){
+    private boolean isValidMove(Direction dir,Pair emptySpacePosition){
 
         switch (dir){
             case UP:
@@ -170,4 +168,21 @@ public class Node {
         return orderValue;
     }
 
+    private static class Pair {
+      private final Integer key;
+      private final Integer value;
+
+      public Pair(Integer key, Integer value) {
+        this.key = key;
+        this.value = value;
+      }
+
+      public Integer getKey() {
+        return key;
+      }
+
+      public Integer getValue() {
+        return value;
+      }
+    }
 }
