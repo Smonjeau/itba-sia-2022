@@ -44,5 +44,11 @@ public class PuzzleState {
         return hash;
     }
 
-
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        PuzzleState that = (PuzzleState) o;
+        return Arrays.deepEquals(board, that.board);
+    }
 }

@@ -177,6 +177,7 @@ public class Solver {
 
 	public static Response aStar(PuzzleState puzzleState, Heuristic heuristicProvider) {
         Comparator<Node> byOrderValue = Comparator.comparingDouble(Node::getOrderValue).thenComparingDouble(Node::hashCode);
+        Set<Node> exploredNodes = new HashSet<>();
 
 		PriorityQueue<Node> queue = new PriorityQueue(9, byOrderValue); // TODO remove magic number
         boolean found = false;
@@ -191,6 +192,8 @@ public class Solver {
 
 		while (!queue.isEmpty()) {
             currentNode = queue.poll();
+            exploredNodes.add(currentNode);
+
 			if (currentNode.isSolved()) {
 				found = true;
 				break;
@@ -199,11 +202,16 @@ public class Solver {
 
             List<Node> nodes = currentNode.MakeStep();
 			for (Node node : nodes) {
+                if (exploredNodes.contains(node))
+                    continue;
+
                 node.setOrderValue(f(node, heuristicProvider));
                 node.setHeight(currentNode.getHeight() + 1);
                 node.setPrev(currentNode);
+
                 queue.add(node);
             }
+
 		}
 
         if (!found) {

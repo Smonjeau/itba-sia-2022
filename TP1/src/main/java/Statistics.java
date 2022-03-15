@@ -1,6 +1,5 @@
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.*;
-import java.util.Arrays;
 
 public class Statistics {
 
@@ -25,28 +24,64 @@ public class Statistics {
             writer.write(statsFormat(response, "BPP", id));
             writer.newLine();
 
-//            start = System.nanoTime();
-//            response = Solver.bppv(new PuzzleState(board), 31);
-//            response.setDuration(System.nanoTime()-start);
-//            writer.write(statsFormat(response, "BPPV", id));
-//            writer.newLine();
+            start = System.nanoTime();
+            response = Solver.bppv(new PuzzleState(board), 20);
+            response.setDuration(System.nanoTime()-start);
+            writer.write(statsFormat(response, "BPPV", id));
+            writer.newLine();
 
             start = System.nanoTime();
             response = Solver.aStar(new PuzzleState(board), new Manhattan());
             response.setDuration(System.nanoTime()-start);
-            writer.write(statsFormat(response, "A*", id));
+            writer.write(statsFormat(response, "A* - Manhattan", id));
+            writer.newLine();
+
+            start = System.nanoTime();
+            response = Solver.aStar(new PuzzleState(board), new Misplaced());
+            response.setDuration(System.nanoTime()-start);
+            writer.write(statsFormat(response, "A* - Misplaced", id));
+            writer.newLine();
+
+            start = System.nanoTime();
+            response = Solver.aStar(new PuzzleState(board), new EnforcedOrder());
+            response.setDuration(System.nanoTime()-start);
+            writer.write(statsFormat(response, "A* - EnforcedOrder", id));
             writer.newLine();
 
             start = System.nanoTime();
             response = Solver.localHeuristic(new PuzzleState(board), new Manhattan(), true);
             response.setDuration(System.nanoTime()-start);
-            writer.write(statsFormat(response, "Local", id));
+            writer.write(statsFormat(response, "Local - Manhattan", id));
+            writer.newLine();
+
+            start = System.nanoTime();
+            response = Solver.localHeuristic(new PuzzleState(board), new Misplaced(), true);
+            response.setDuration(System.nanoTime()-start);
+            writer.write(statsFormat(response, "Local - Misplaced", id));
+            writer.newLine();
+
+            start = System.nanoTime();
+            response = Solver.localHeuristic(new PuzzleState(board), new EnforcedOrder(), true);
+            response.setDuration(System.nanoTime()-start);
+            writer.write(statsFormat(response, "Local - EnforcedOrder", id));
             writer.newLine();
 
             start = System.nanoTime();
             response = Solver.globalHeuristic(new PuzzleState(board), new Manhattan());
             response.setDuration(System.nanoTime()-start);
-            writer.write(statsFormat(response, "Global", id));
+            writer.write(statsFormat(response, "Global - Manhattan", id));
+            writer.newLine();
+
+            start = System.nanoTime();
+            response = Solver.globalHeuristic(new PuzzleState(board), new Misplaced());
+            response.setDuration(System.nanoTime()-start);
+            writer.write(statsFormat(response, "Global - Misplaced", id));
+            writer.newLine();
+
+            start = System.nanoTime();
+            response = Solver.globalHeuristic(new PuzzleState(board), new EnforcedOrder());
+            response.setDuration(System.nanoTime()-start);
+            writer.write(statsFormat(response, "Global - EnforcedOrder", id));
             writer.newLine();
             id++;
         }

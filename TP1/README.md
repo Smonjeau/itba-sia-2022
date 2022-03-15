@@ -7,9 +7,9 @@ Los parámetros de ejecución se leeran del archivo `sia.properties` dentro de l
 Los posibles parámetros son:
 
 | Parameter     | Type     | Values                                        | Description                                                                       |
-| :-------------| :------- |:----------------------------------------------| :-------------------------------------------------------------------------------- |
+| :-------------| :------- |:----------------------------------------------|:----------------------------------------------------------------------------------|
 | `alg`         | `String` | `BPA`, `BPP`, `BPPV`, `local`, `global`, `A*` | Estrategía de busqueda que se utilizará                                           |
-| `guess`       | `int`    |                                               | Limite inicial utilizado en la estrategía BPPV                                    |
+| `guess`       | `int`    |                                               | Limite inicial utilizado en la estrategía BPPV. El valor máximo es 31             |
 | `heuristic`   | `String` | `manhattan`, `misplaced`, `enforced order`    | Heuristica ha utilizar. Es necesario para las estrategías `local`, `global`, `A*` |
 
 

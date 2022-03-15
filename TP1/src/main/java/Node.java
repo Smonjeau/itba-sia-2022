@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 
 public class Node {
@@ -136,6 +137,14 @@ public class Node {
     @Override
     public int hashCode() {
         return state.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Node node = (Node) o;
+        return node.getState().equals(state);
     }
 
     public Node getPrev() {
