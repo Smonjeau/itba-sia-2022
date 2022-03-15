@@ -2,8 +2,15 @@
 # TP1
 Generador de soluciones para el problema de rompecabeza de números de 8 dígitos.
 Se utilizan las estrategias de busqueda: BPA, BPP, BPPV, Heurística Local, Heurística Global y A*.
+
+## Ejecución
+```bash
+java -jar tp1-g18.jar <path_archivo_json_config>
+```
+
 ## Archivo de configuración
-Los parámetros de ejecución se leeran del archivo `sia.properties` dentro de la carpeta `resources`.
+Los parámetros de ejecución se leeran del archivo .json pasado por argumento al correr el programa.
+
 Los posibles parámetros son:
 
 | Parameter     | Type     | Values                                        | Description                                                                       |
@@ -85,9 +92,6 @@ Los posibles parámetros son:
 }
 ```
 
-## Ejecución
-```bash
-java -jar itba-sia-2022-g18.jar <config.json>
-```
+
 
 
