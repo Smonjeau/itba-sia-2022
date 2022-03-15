@@ -1,6 +1,6 @@
 
 # TP1
-Generador de soluciones para el problema de rompecabeza de 8 números.
+Generador de soluciones para el problema de rompecabezas de 8 números.
 Se utilizan las estrategias de busqueda: BPA, BPP, BPPV, Heurística Local, Heurística Global y A*.
 
 ## Ejecución
