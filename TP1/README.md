@@ -1,12 +1,13 @@
 
 # TP1
-Generador de soluciones para el problema de rompecabeza de números de 8 dígitos.
+Generador de soluciones para el problema de rompecabeza de 8 números.
 Se utilizan las estrategias de busqueda: BPA, BPP, BPPV, Heurística Local, Heurística Global y A*.
 
 ## Ejecución
 ```bash
 java -jar tp1-g18.jar <path_archivo_json_config>
 ```
+Los resultados de la ejecución se generarán en el archivo `logs.txt`
 
 ## Archivo de configuración
 Los parámetros de ejecución se leeran del archivo .json pasado por argumento al correr el programa.
