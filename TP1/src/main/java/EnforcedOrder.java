@@ -1,3 +1,4 @@
+import java.util.Arrays;
 
 public class EnforcedOrder implements Heuristic {
 
@@ -11,7 +12,7 @@ public class EnforcedOrder implements Heuristic {
 
         for (int i = 0; i < board.length; i++) {
             for (int j = 0; j < board[i].length; j++) {
-                if (board[i][j] != 0 && board[i][j] != expectedBoard[i][j]) {
+                if (expectedBoard[i][j] != 0 && board[i][j] != expectedBoard[i][j]) {
                     heuristic += 8 - expectedBoard[i][j] + 1;
                 }
             }
