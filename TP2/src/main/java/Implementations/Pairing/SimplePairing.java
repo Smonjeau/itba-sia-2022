@@ -14,15 +14,18 @@ public class SimplePairing implements Pairing {
         boolean[] bag1 = i1.getBag();
         boolean[] bag2 = i2.getBag();
         int breakpoint=new Random(System.currentTimeMillis()).nextInt(bag1.length);
-        Individual newIndividual1=new Individual(bag1.length, i1.getItems(),i1.getMutationChance());
-        Individual newIndividual2=new Individual(bag1.length, i1.getItems(),i1.getMutationChance());
 
-        boolean[] newbag1 = newIndividual1.getBag();
-        boolean[] newbag2 = newIndividual2.getBag();
+        boolean[] newbag1 = new boolean[bag1.length];
+        boolean[] newbag2 = new boolean[bag1.length];
+
+
         java.lang.System.arraycopy(bag1,0,newbag1,0,breakpoint);
         java.lang.System.arraycopy(bag2,0,newbag2,0,breakpoint);
         java.lang.System.arraycopy(bag2,breakpoint,newbag1,breakpoint,bag1.length-breakpoint);
         java.lang.System.arraycopy(bag1,breakpoint,newbag2,breakpoint,bag2.length-breakpoint);
+
+        Individual newIndividual1=new Individual(newbag1, i1.getItems());
+        Individual newIndividual2=new Individual(newbag2, i1.getItems());
 
         return new Individual[]{newIndividual1, newIndividual2};
     }

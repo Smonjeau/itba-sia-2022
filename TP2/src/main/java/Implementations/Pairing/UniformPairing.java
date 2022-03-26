@@ -25,6 +25,6 @@ public class UniformPairing implements Pairing {
             }
         }
 
-        return new Individual[]{new Individual(b1, i1.getItems(), i1.getMutationChance()), new Individual(b2, i2.getItems(), i1.getMutationChance())};
+        return new Individual[]{new Individual(b1, i1.getItems()), new Individual(b2, i2.getItems())};
     }
 }

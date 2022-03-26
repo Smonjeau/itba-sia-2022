@@ -9,23 +9,18 @@ public class Individual {
     private int weightSum;
     private int benefitSum;
     private final List<Item> items;
-    private double mutationChance;
+    private static double mutationChance;
 
-    public Individual(int size, List<Item> items, double mutationChance) {
-        this.bag = new boolean[size];
-        this.items = items;
-        this.mutationChance=mutationChance;
-        calculateFitness();
-        calculateWeightSum();
-    }
-
-    public Individual(boolean[] bag, List<Item> items, double mutationChance) {
+    public Individual(boolean[] bag, List<Item> items) {
         this.bag = Arrays.copyOf(bag, bag.length);
         this.items = items;
         calculateFitness();
         calculateWeightSum();
     }
 
+    public static void setMutationChance(double mutationChance){
+        Individual.mutationChance =mutationChance;
+    }
     public int getWeightSum() {
         return weightSum;
     }
