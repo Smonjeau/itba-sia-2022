@@ -9,9 +9,8 @@ import java.util.Random;
 
 public class SimplePairing implements Pairing {
     @Override
-    public List<Individual> matchIndividuals(Individual i1, Individual i2) {
+    public Individual[] matchIndividuals(Individual i1, Individual i2) {
 
-        List<Individual>individualList=new ArrayList<>(2);
         boolean[] bag1 = i1.getBag();
         boolean[] bag2 = i2.getBag();
         int breakpoint=new Random(System.currentTimeMillis()).nextInt(bag1.length);
@@ -25,9 +24,6 @@ public class SimplePairing implements Pairing {
         java.lang.System.arraycopy(bag2,breakpoint,newbag1,breakpoint,bag1.length-breakpoint);
         java.lang.System.arraycopy(bag1,breakpoint,newbag2,breakpoint,bag2.length-breakpoint);
 
-        individualList.add(newIndividual1);
-        individualList.add(newIndividual2);
-
-        return individualList;
+        return new Individual[]{newIndividual1, newIndividual2};
     }
 }

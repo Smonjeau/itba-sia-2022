@@ -1,8 +1,8 @@
 package entities;
 
 public class Item {
-    private int weight;
-    private int benefit;
+    private final int weight;
+    private final int benefit;
 
     public Item(int weight, int benefit) {
         this.weight = weight;

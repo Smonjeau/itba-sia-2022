@@ -1,5 +1,3 @@
-import interfaces.Fitness;
-
 import java.util.Scanner;
 
 public class Main {
