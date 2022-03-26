@@ -49,5 +49,15 @@ public class Individual {
 
     }
 
+    public boolean[] getBag() {
+        return bag;
+    }
 
+    public List<Item> getItems() {
+        return items;
+    }
+
+    public double getMutationChance() {
+        return mutationChance;
+    }
 }
