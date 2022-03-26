@@ -1,16 +1,19 @@
 package entities;
 
 import java.util.List;
+import java.util.Random;
 
 public class Individual {
     boolean[] bag;
     private int weightSum;
     private int benefitSum;
     private List<Item> items;
+    private double mutationChance;
 
-    public Individual(int size, List<Item> items) {
+    public Individual(int size, List<Item> items,double mutationChance) {
         this.bag = new boolean[size];
         this.items = items;
+        this.mutationChance=mutationChance;
         calculateFitness();
         calculateWeightSum();
     }
@@ -26,6 +29,12 @@ public class Individual {
 
 
     public void mutate(){
+        Random random=new Random(System.currentTimeMillis());
+        for (int i=0;i< bag.length;i++){
+            if (random.nextDouble()<mutationChance){
+                bag[i]= !bag[i];
+            }
+        }
         calculateFitness();
         calculateWeightSum();
     }
