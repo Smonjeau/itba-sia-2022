@@ -49,13 +49,21 @@ public class Individual {
         calculateWeightSum();
     }
     private void calculateFitness(){
+        int sum = 0;
         for(int i =0;i<bag.length;i++){
-
+            if(bag[i])
+                sum += items.get(i).getBenefit();
         }
+        this.benefitSum = sum;
     }
 
     private void calculateWeightSum(){
-
+        int sum = 0;
+        for(int i =0;i<bag.length;i++){
+            if(bag[i])
+                sum += items.get(i).getWeight();
+        }
+        this.weightSum = sum;
 
     }
 
