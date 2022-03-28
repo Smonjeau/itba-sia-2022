@@ -2,15 +2,12 @@ package entities;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Objects;
-import java.util.Random;
 
 public class Individual {
     boolean[] bag;
     private int weightSum;
     private int benefitSum;
     private final List<Item> items;
-    private static double mutationChance;
 
     public Individual(boolean[] bag, List<Item> items) {
         this.bag = Arrays.copyOf(bag, bag.length);
@@ -19,13 +16,9 @@ public class Individual {
         calculateWeightSum();
     }
 
-    public static void setMutationChance(double mutationChance){
-        Individual.mutationChance =mutationChance;
-    }
     public int getWeightSum() {
         return weightSum;
     }
-
 
     public int getBenefitSum() {
         return benefitSum;
@@ -39,10 +32,9 @@ public class Individual {
         return items;
     }
 
-    public void mutate(){
-        Random random=new Random(System.currentTimeMillis());
-        for (int i=0;i< bag.length;i++){
-            if (random.nextDouble()<mutationChance){
+    public void mutate(double mutationChance){
+        for (int i=0; i < bag.length; i++){
+            if (Math.random() < mutationChance){
                 bag[i]= !bag[i];
             }
         }
@@ -55,7 +47,6 @@ public class Individual {
             if (bag[i])
                 benefitSum += items.get(i).getBenefit();
         }
-        this.benefitSum = sum;
     }
 
     private void calculateWeightSum(){
@@ -65,10 +56,6 @@ public class Individual {
                 weightSum += items.get(i).getWeight();
         }
 
-    }
-
-    public double getMutationChance() {
-        return mutationChance;
     }
 
     @Override

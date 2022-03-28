@@ -6,15 +6,21 @@ import java.util.List;
 
 public class BoltzmannSelection implements Selection {
 
-    private double T;
+    private final double T0;
+    private final double TC = 0;
+    private final double k;
+    private int t = 0;
 
-    public BoltzmannSelection(int T) {
-        this.T = T;
+    public BoltzmannSelection(double T, double k) {
+        this.T0 = T;
+        this.k = k;
     }
 
     @Override
     public List<Individual> select(List<Individual> generation, int WeightLimit) {
-        Double sum = generation.stream().mapToDouble(i -> Math.exp(i.getBenefitSum() / T)).sum();
+        double T = getT();
+
+        double sum = generation.stream().mapToDouble(i -> Math.exp(i.getBenefitSum() / T)).sum();
 
         List<Individual> newGeneration = new ArrayList<>();
 
@@ -25,9 +31,13 @@ public class BoltzmannSelection implements Selection {
             }
         }
 
-        T -= 10;
+        t++;
 
         return newGeneration;
+    }
+
+    private double getT() {
+        return TC + (T0 - TC)*Math.exp(-k*t);
     }
 }
 

@@ -20,7 +20,6 @@ public class PairingTest {
             new Item(25, 2)
         );
 
-        Individual.setMutationChance(0.1);
         Individual i1 = new Individual(new boolean[]{false, false, true, true, false}, items);
         Individual i2 = new Individual(new boolean[]{true, false, false, true, true}, items);
 
@@ -43,7 +42,6 @@ public class PairingTest {
                 new Item(25, 2)
         );
 
-        Individual.setMutationChance(0.1);
         Individual i1 = new Individual(new boolean[]{false, false, true, true, false}, items);
         Individual i2 = new Individual(new boolean[]{true, false, false, true, true}, items);
 
