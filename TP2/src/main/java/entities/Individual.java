@@ -55,6 +55,7 @@ public class Individual {
             if (bag[i])
                 benefitSum += items.get(i).getBenefit();
         }
+        this.benefitSum = sum;
     }
 
     private void calculateWeightSum(){
