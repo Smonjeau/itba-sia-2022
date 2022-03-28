@@ -2,6 +2,7 @@ package entities;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Objects;
 import java.util.Random;
 
 public class Individual {
@@ -49,13 +50,19 @@ public class Individual {
         calculateWeightSum();
     }
     private void calculateFitness(){
-        for(int i =0;i<bag.length;i++){
-
+        benefitSum = 0;
+        for (int i =0; i < bag.length; i++){
+            if (bag[i])
+                benefitSum += items.get(i).getBenefit();
         }
     }
 
     private void calculateWeightSum(){
-
+        weightSum = 0;
+        for (int i =0; i < bag.length; i++){
+            if (bag[i])
+                weightSum += items.get(i).getWeight();
+        }
 
     }
 
@@ -65,8 +72,14 @@ public class Individual {
 
     @Override
     public String toString() {
-        return "Individual{" +
-                "bag=" + Arrays.toString(bag) +
-                '}';
+        return "bag=" + Arrays.toString(bag) + " benefit: " + benefitSum + " weight: " + weightSum + "\n";
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Individual that = (Individual) o;
+        return Arrays.equals(bag, that.bag);
     }
 }
