@@ -22,12 +22,12 @@ public class SelectionTest {
         );
 
         List<Individual> individuals = Arrays.asList(
-                new Individual(new boolean[]{false, false, true, false, true}, items),  // benefit: 8 weight: 45
-                new Individual(new boolean[]{true, false, true, false, true}, items),   // benefit: 12 weight: 55
-                new Individual(new boolean[]{false, true, false, false, true}, items),  // benefit: 10 weight: 30
-                new Individual(new boolean[]{false, false, true, true, true}, items),   // benefit: 18 weight: 57
-                new Individual(new boolean[]{true, false, false, false, true}, items),  // benefit: 6 weight: 35
-                new Individual(new boolean[]{false, false, true, false, false}, items)  // benefit: 6 weight: 20
+                new Individual(new boolean[]{false, false, true, false, true}),  // benefit: 8 weight: 45
+                new Individual(new boolean[]{true, false, true, false, true}),   // benefit: 12 weight: 55
+                new Individual(new boolean[]{false, true, false, false, true}),  // benefit: 10 weight: 30
+                new Individual(new boolean[]{false, false, true, true, true}),   // benefit: 18 weight: 57
+                new Individual(new boolean[]{true, false, false, false, true}),  // benefit: 6 weight: 35
+                new Individual(new boolean[]{false, false, true, false, false})  // benefit: 6 weight: 20
         );
 
         Selection selection = new EliteSelection();
@@ -35,9 +35,9 @@ public class SelectionTest {
         List<Individual> newGeneration = selection.select(individuals);
 
         List<Individual> expectedGeneration = Arrays.asList(
-                new Individual(new boolean[]{false, true, false, false, true}, items),
-                new Individual(new boolean[]{false, false, true, false, false}, items),
-                new Individual(new boolean[]{true, false, false, false, true}, items)
+                new Individual(new boolean[]{false, true, false, false, true}),
+                new Individual(new boolean[]{false, false, true, false, false}),
+                new Individual(new boolean[]{true, false, false, false, true})
         );
 
         Assert.assertEquals(newGeneration, expectedGeneration);

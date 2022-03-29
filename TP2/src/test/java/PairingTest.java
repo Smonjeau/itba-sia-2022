@@ -20,8 +20,8 @@ public class PairingTest {
             new Item(25, 2)
         );
 
-        Individual i1 = new Individual(new boolean[]{false, false, true, true, false}, items);
-        Individual i2 = new Individual(new boolean[]{true, false, false, true, true}, items);
+        Individual i1 = new Individual(new boolean[]{false, false, true, true, false});
+        Individual i2 = new Individual(new boolean[]{true, false, false, true, true});
 
         Individual[] newIndividual = new SimplePairing().matchIndividuals(i1, i2);
 
@@ -42,8 +42,8 @@ public class PairingTest {
                 new Item(25, 2)
         );
 
-        Individual i1 = new Individual(new boolean[]{false, false, true, true, false}, items);
-        Individual i2 = new Individual(new boolean[]{true, false, false, true, true}, items);
+        Individual i1 = new Individual(new boolean[]{false, false, true, true, false});
+        Individual i2 = new Individual(new boolean[]{true, false, false, true, true});
 
         Individual[] newIndividual = new UniformPairing().matchIndividuals(i1, i2);
 

@@ -148,7 +148,7 @@ public class Main {
             for(int j=0;j<n;j++){
                 bag[j] = random.nextBoolean();
             }
-            population.add(new Individual(bag,items));
+            population.add(new Individual(bag));
             i++;
 
         }

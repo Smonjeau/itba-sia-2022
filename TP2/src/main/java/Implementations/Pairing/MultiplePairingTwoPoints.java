@@ -30,8 +30,8 @@ public class MultiplePairingTwoPoints implements Pairing {
             bag2[i] = i2.getBag()[i];
         }
 
-        Individual toReturn1 = new Individual(bag1,i1.getItems());
-        Individual toReturn2 = new Individual(bag2,i2.getItems());
+        Individual toReturn1 = new Individual(bag1);
+        Individual toReturn2 = new Individual(bag2);
         return new Individual[]{toReturn1,toReturn2};
     }
 }

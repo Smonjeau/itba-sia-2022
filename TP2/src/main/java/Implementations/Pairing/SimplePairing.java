@@ -24,8 +24,8 @@ public class SimplePairing implements Pairing {
         java.lang.System.arraycopy(bag2,breakpoint,newbag1,breakpoint,bag1.length-breakpoint);
         java.lang.System.arraycopy(bag1,breakpoint,newbag2,breakpoint,bag2.length-breakpoint);
 
-        Individual newIndividual1=new Individual(newbag1, i1.getItems());
-        Individual newIndividual2=new Individual(newbag2, i1.getItems());
+        Individual newIndividual1=new Individual(newbag1);
+        Individual newIndividual2=new Individual(newbag2);
 
         return new Individual[]{newIndividual1, newIndividual2};
     }

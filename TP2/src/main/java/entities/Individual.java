@@ -7,11 +7,9 @@ public class Individual {
     boolean[] bag;
     private int weightSum;
     private double fitness;
-    private final List<Item> items;
 
-    public Individual(boolean[] bag, List<Item> items) {
+    public Individual(boolean[] bag) {
         this.bag = Arrays.copyOf(bag, bag.length);
-        this.items = items;
         calculateWeightSum();
         calculateFitness();
     }
@@ -32,10 +30,6 @@ public class Individual {
         return bag;
     }
 
-    public List<Item> getItems() {
-        return items;
-    }
-
     public void mutate(double mutationChance){
         for (int i=0; i < bag.length; i++){
             if (Math.random() < mutationChance){
@@ -49,7 +43,7 @@ public class Individual {
         fitness = 0;
         for (int i =0; i < bag.length; i++){
             if (bag[i])
-                fitness += items.get(i).getBenefit();
+                fitness += Environment.items.get(i).getBenefit();
         }
 
         fitness = weightSum > Environment.weightLimit ? fitness - ((weightSum/ (double)Environment.weightLimit) - 1)*fitness*2 : fitness;
@@ -59,7 +53,7 @@ public class Individual {
         weightSum = 0;
         for (int i =0; i < bag.length; i++){
             if (bag[i])
-                weightSum += items.get(i).getWeight();
+                weightSum += Environment.items.get(i).getWeight();
         }
     }
 
@@ -67,7 +61,7 @@ public class Individual {
         int aux = 0;
         for (int i =0; i < bag.length; i++){
             if (bag[i])
-                aux += items.get(i).getBenefit();
+                aux += Environment.items.get(i).getBenefit();
         }
         return aux;
     }
