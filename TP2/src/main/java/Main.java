@@ -10,6 +10,7 @@ import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
 import com.opencsv.CSVReaderBuilder;
 import com.opencsv.exceptions.CsvException;
+import entities.Environment;
 import entities.Individual;
 import entities.Item;
 import interfaces.Pairing;
@@ -25,6 +26,7 @@ import java.util.*;
 import static java.lang.System.exit;
 
 public class Main {
+
     public static void main(String[] args) throws CsvException, IOException, ParseException {
 
         if(args.length != 1) {
@@ -50,7 +52,7 @@ public class Main {
                 exit(1);
             }
             maxItemsInBag = Integer.parseInt(values[0]);
-            maxWeight = Integer.parseInt(values[1]);
+            Environment.weightLimit = Integer.parseInt(values[1]);
 
             while ((values = reader.readNext()) != null) {
                 items.add(new Item(Integer.parseInt(values[0]),Integer.parseInt(values[1])));
@@ -61,6 +63,8 @@ public class Main {
             System.err.println("wrong data file");
             exit(1);
         }
+
+        Environment.items = items;
 
         // Begin Parsing config.json
         FileReader fr = new FileReader("src/main/resources/config.json");
@@ -93,7 +97,7 @@ public class Main {
         switch(selectionMethodStr) {
             case "boltzmann":
                 double k = (double) json.get("k");
-                double T0 = (double) json.get("T0");
+                double T0 = ((Long) json.get("T0")).doubleValue();
                 selectionMethod = new BoltzmannSelection(T0, k);
                 break;
             case "elite":
@@ -124,9 +128,12 @@ public class Main {
                 newPopulation.add(currentPopulation.get(j+1));
             }
 
-            currentPopulation = selectionMethod.select(newPopulation, maxWeight);
+            currentPopulation = selectionMethod.select(newPopulation);
 
         }
+
+        currentPopulation.sort(Comparator.comparingDouble(Individual::getFitness).reversed());
+        System.out.println(currentPopulation.get(0));
 
 
 

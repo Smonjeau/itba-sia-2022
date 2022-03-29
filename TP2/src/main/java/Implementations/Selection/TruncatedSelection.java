@@ -7,23 +7,23 @@ import java.util.*;
 
 public class TruncatedSelection implements Selection {
     @Override
-    public List<Individual> select(List<Individual> generation,int WeightLimit) {
+    public List<Individual> select(List<Individual> generation) {
         int winnerSize=generation.size()/2;
 
         //remove weight violations but checking not to remove too many
-        generation.sort(Comparator.comparingInt(Individual::getBenefitSum).reversed());
+        generation.sort(Comparator.comparingDouble(Individual::getFitness).reversed());
         Iterator<Individual>iterator=generation.iterator();
         int genSize= generation.size();
-        while (iterator.hasNext()&&genSize>winnerSize){
-            Individual ind=iterator.next();
-            if (ind.getWeightSum()>WeightLimit){
-                iterator.remove();
-                genSize--;
-            }
-        }
+//        while (iterator.hasNext()&&genSize>winnerSize){
+//            Individual ind=iterator.next();
+//            if (ind.getWeightSum()>WeightLimit){
+//                iterator.remove();
+//                genSize--;
+//            }
+//        }
 
 //        reorder from best to worst
-        generation.sort(Comparator.comparingInt(Individual::getBenefitSum));
+        generation.sort(Comparator.comparingDouble(Individual::getFitness));
         Random random=new Random(System.currentTimeMillis());
 
         //truncation value must be smaller than winner size or there wont be enough individuals next generation

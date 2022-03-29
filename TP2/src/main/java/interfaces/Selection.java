@@ -6,5 +6,5 @@ import java.util.List;
 
 @FunctionalInterface
 public interface Selection {
-    List<Individual> select(List<Individual> generation,int WeightLimit);
+    List<Individual> select(List<Individual> generation);
 }

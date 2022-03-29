@@ -18,7 +18,7 @@ public class UniformPairing implements Pairing {
         boolean aux;
 
         for (int i = 0; i < b1.length; i++) {
-            if (Math.random() >= PAIRING_PROBABILITY) {
+            if (Math.random() <= PAIRING_PROBABILITY) {
                 aux = b1[i];
                 b1[i] = b2[i];
                 b2[i] = aux;

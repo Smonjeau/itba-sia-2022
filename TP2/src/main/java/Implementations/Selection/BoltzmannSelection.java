@@ -17,19 +17,15 @@ public class BoltzmannSelection implements Selection {
     }
 
     @Override
-    public List<Individual> select(List<Individual> generation, int WeightLimit) {
+    public List<Individual> select(List<Individual> generation) {
         double T = getT();
 
-        double sum = generation.stream().mapToDouble(i -> Math.exp(i.getBenefitSum() / T)).sum();
+        double sum = generation.stream().mapToDouble(i -> Math.exp(i.getFitness() / T)).sum();
 
+        generation.forEach(i -> i.setFitness(Math.exp(i.getFitness()/T)/ sum));
+
+        // TODO call ruleta selection
         List<Individual> newGeneration = new ArrayList<>();
-
-        for (Individual individual : generation) {
-            double probability = Math.exp(individual.getBenefitSum()/T)/ sum;
-            if (Math.random() >= probability) {
-                newGeneration.add(individual);
-            }
-        }
 
         t++;
 

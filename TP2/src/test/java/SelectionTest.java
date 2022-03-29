@@ -32,7 +32,7 @@ public class SelectionTest {
 
         Selection selection = new EliteSelection();
 
-        List<Individual> newGeneration = selection.select(individuals, 40);
+        List<Individual> newGeneration = selection.select(individuals);
 
         List<Individual> expectedGeneration = Arrays.asList(
                 new Individual(new boolean[]{false, true, false, false, true}, items),

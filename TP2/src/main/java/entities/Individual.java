@@ -6,22 +6,26 @@ import java.util.List;
 public class Individual {
     boolean[] bag;
     private int weightSum;
-    private int benefitSum;
+    private double fitness;
     private final List<Item> items;
 
     public Individual(boolean[] bag, List<Item> items) {
         this.bag = Arrays.copyOf(bag, bag.length);
         this.items = items;
-        calculateFitness();
         calculateWeightSum();
+        calculateFitness();
     }
 
     public int getWeightSum() {
         return weightSum;
     }
 
-    public int getBenefitSum() {
-        return benefitSum;
+    public double getFitness() {
+        return fitness;
+    }
+
+    public void setFitness(double fitness) {
+        this.fitness = fitness;
     }
 
     public boolean[] getBag() {
@@ -38,15 +42,17 @@ public class Individual {
                 bag[i]= !bag[i];
             }
         }
-        calculateFitness();
         calculateWeightSum();
+        calculateFitness();
     }
     private void calculateFitness(){
-        benefitSum = 0;
+        fitness = 0;
         for (int i =0; i < bag.length; i++){
             if (bag[i])
-                benefitSum += items.get(i).getBenefit();
+                fitness += items.get(i).getBenefit();
         }
+
+        fitness = weightSum > Environment.weightLimit ? fitness - ((weightSum/ (double)Environment.weightLimit) - 1)*fitness*2 : fitness;
     }
 
     private void calculateWeightSum(){
@@ -55,12 +61,21 @@ public class Individual {
             if (bag[i])
                 weightSum += items.get(i).getWeight();
         }
+    }
 
+    private int calculateBenefit() {
+        int aux = 0;
+        for (int i =0; i < bag.length; i++){
+            if (bag[i])
+                aux += items.get(i).getBenefit();
+        }
+        return aux;
     }
 
     @Override
     public String toString() {
-        return "bag=" + Arrays.toString(bag) + " benefit: " + benefitSum + " weight: " + weightSum + "\n";
+
+        return "bag=" + Arrays.toString(bag) + "\n benefit: " + calculateBenefit() + "\n weight: " + weightSum + "\n";
     }
 
     @Override
