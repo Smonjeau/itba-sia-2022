@@ -7,14 +7,21 @@ import java.util.*;
 
 public class TournamentSelection implements Selection {
 
-    private double tournamentChance;
+    private static Double tournamentChance=null;
 
-    public TournamentSelection(double tournamentChance) {
-        this.tournamentChance=tournamentChance;
+//    public TournamentSelection(double tournamentChance) {
+//        this.tournamentChance=tournamentChance;
+//    }
+
+    public static void setTournamentChance(Double tournamentChance) {
+        TournamentSelection.tournamentChance = tournamentChance;
     }
 
     @Override
     public List<Individual> select(List<Individual> generation) {
+        if (tournamentChance==null)
+            throw new RuntimeException("No tournament Chance selected");
+
         int winnerSize=generation.size()/2;
         List<Individual> newGeneration=new ArrayList<>(winnerSize);
         Random random=new Random(System.currentTimeMillis());
@@ -56,7 +63,7 @@ public class TournamentSelection implements Selection {
             }
             generation.addAll(loserList);
             loserList.clear();
-            
+
         }
         return newGeneration;
     }
