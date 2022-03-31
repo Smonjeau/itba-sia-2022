@@ -46,6 +46,9 @@ public class Individual {
         }
 
         fitness = weightSum > Environment.weightLimit ? fitness - ((weightSum/ (double)Environment.weightLimit) - 1)*fitness*2 : fitness;
+//        fitness = weightSum > Environment.weightLimit ? -(weightSum/ (double)Environment.weightLimit)*fitness : fitness;
+//        fitness = weightSum > Environment.weightLimit ? 1/(double) weightSum : fitness;
+//        fitness = weightSum > Environment.weightLimit ? Math.exp(-weightSum) : fitness;
     }
 
     private void calculateWeightSum(){
