@@ -8,7 +8,7 @@ public class TruncatedSelection implements Selection {
     public List<Individual> select(List<Individual> generation) {
         int winnerSize=generation.size()/2;
 
-        generation.sort(Comparator.comparingDouble(Individual::getFitness));
+        generation.sort(Comparator.comparingDouble(Individual::getFitness).reversed());
         Random random=new Random(System.currentTimeMillis());
 
 

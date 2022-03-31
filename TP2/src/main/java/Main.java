@@ -137,6 +137,8 @@ public class Main {
             currentPopulation = selectionMethod.select(newPopulation);
 //            System.out.println(currentPopulation.stream().filter(ind -> ind.getFitness() > 0).count());
 //            System.out.println(currentPopulation.stream().map(Individual::getFitness).reduce(0.0, Double::sum)/currentPopulation.size());
+            if (i%100==0)
+                System.out.println("gen "+i);
         }
 
         currentPopulation.sort(Comparator.comparingDouble(Individual::getFitness).reversed());
@@ -158,7 +160,28 @@ public class Main {
                 aux = random.nextInt(5);
                 bag[j] = aux > 3;
             }
+            //comment this for seeded start
             population.add(new Individual(bag));
+
+
+            //uncomment this for seeded start
+//            Individual ind=new Individual(bag);
+//
+//            while (ind.getWeightSum()>Environment.weightLimit){
+//                boolean erasure=false;
+//                for (int j = random.nextInt(bag.length); !erasure; j++) {
+//                    if (j==bag.length){
+//                        j=0;
+//                    }
+//                    if (bag[j]){
+//                        bag[j]=false;
+//                        erasure=true;
+//                        ind=new Individual(bag);
+//                    }
+//                }
+//            }
+//
+//            population.add(ind);
             i++;
 
         }
