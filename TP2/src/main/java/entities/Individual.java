@@ -44,7 +44,7 @@ public class Individual {
                 fitness += Environment.items.get(i).getBenefit();
         }
 
-        fitness = weightSum > Environment.weightLimit ? fitness - ((weightSum/ (double)Environment.weightLimit) - 1)*fitness*2 : fitness;
+        fitness = weightSum > Environment.weightLimit ? fitness - ((weightSum/ (double)Environment.weightLimit))*fitness*2 : fitness;
     }
 
     private void calculateWeightSum(){
@@ -55,7 +55,7 @@ public class Individual {
         }
     }
 
-    private int calculateBenefit() {
+    public int calculateBenefit() {
         int aux = 0;
         for (int i =0; i < bag.length; i++){
             if (bag[i])
@@ -64,10 +64,12 @@ public class Individual {
         return aux;
     }
 
+
     @Override
     public String toString() {
         return "bag=" + Arrays.toString(bag) + "\n benefit: " + calculateBenefit() + " pro_benefit: " + fitness + "\n weight: " + weightSum + "\n";
     }
+
 
     @Override
     public boolean equals(Object o) {

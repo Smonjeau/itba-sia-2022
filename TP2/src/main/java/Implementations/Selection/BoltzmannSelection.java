@@ -24,8 +24,9 @@ public class BoltzmannSelection implements Selection {
 
         generation.forEach(i -> i.setFitness(Math.exp(i.getFitness()/T)/ sum));
 
-        // TODO call ruleta selection
-        List<Individual> newGeneration = new ArrayList<>();
+        RouletteWheelSelection rouletteWheelSelection = new RouletteWheelSelection();
+        List<Individual> newGeneration = rouletteWheelSelection.select(generation);
+
 
         t++;
 

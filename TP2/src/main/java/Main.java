@@ -2,10 +2,7 @@
 import Implementations.Pairing.MultiplePairingTwoPoints;
 import Implementations.Pairing.SimplePairing;
 import Implementations.Pairing.UniformPairing;
-import Implementations.Selection.BoltzmannSelection;
-import Implementations.Selection.EliteSelection;
-import Implementations.Selection.TournamentSelection;
-import Implementations.Selection.TruncatedSelection;
+import Implementations.Selection.*;
 import com.opencsv.CSVParser;
 import com.opencsv.CSVParserBuilder;
 import com.opencsv.CSVReader;
@@ -23,6 +20,7 @@ import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.*;
+import java.util.stream.Collectors;
 
 import static java.lang.System.exit;
 
@@ -69,6 +67,7 @@ public class Main {
 
         // Begin Parsing config.json
         FileReader fr = new FileReader("src/main/resources/config.json");
+        //FileReader fr = new FileReader("C:\\Users\\gusta\\Desktop\\itba-sia-2022\\TP2\\src\\main\\resources\\config.json");
         JSONObject json = (JSONObject) new JSONParser().parse(fr);
 
         String pairingMethodStr = (String) json.get("pairing");
@@ -111,6 +110,9 @@ public class Main {
                 double tournamentProbability = (double) json.get("tournament_prob");
                 selectionMethod = new TournamentSelection(tournamentProbability);
                 break;
+            case "roulette":
+                selectionMethod = new RouletteWheelSelection();
+                break;
             default:
                 System.err.println("Invalid selection method");
                 exit(1);
@@ -123,20 +125,24 @@ public class Main {
 
             for (int j = 0; j < currentPopulation.size(); j += 2) {
                 // TODO change pairing selection method
-                Individual[] newIndividuals = pairingMethod.matchIndividuals(currentPopulation.get(j), currentPopulation.get(j + 1));
+                //{currentPopulation.get(j),currentPopulation.get(j+1)};
+                Individual[] individuals = pickIndividuals(currentPopulation);
 
+                Individual[] newIndividuals = pairingMethod.matchIndividuals(individuals[0], individuals[1]);
                 for (Individual individual : newIndividuals)
                     individual.mutate(mutationProb);
 
                 newPopulation.addAll(Arrays.asList(newIndividuals));
-                newPopulation.add(currentPopulation.get(j));
-                newPopulation.add(currentPopulation.get(j+1));
+                newPopulation.addAll(Arrays.asList(individuals));
+
+                //newPopulation.add(currentPopulation.get(j));
+                //newPopulation.add(currentPopulation.get(j+1));
             }
 //            System.out.println(Arrays.deepToString(newPopulation.toArray()));
 
             currentPopulation = selectionMethod.select(newPopulation);
 //            System.out.println(currentPopulation.stream().filter(ind -> ind.getFitness() > 0).count());
-//            System.out.println(currentPopulation.stream().map(Individual::getFitness).reduce(0.0, Double::sum)/currentPopulation.size());
+ //           System.out.println(currentPopulation.stream().map(Individual::getFitness).reduce(0.0, Double::sum)/currentPopulation.size());
         }
 
         currentPopulation.sort(Comparator.comparingDouble(Individual::getFitness).reversed());
@@ -165,5 +171,60 @@ public class Main {
 
         return population;
     }
+
+    private static Individual[]  pickIndividuals (List<Individual> population) {
+        List<Double> aux = population.stream().map(Individual::getFitness).collect(Collectors.toList());
+        Double minFit = aux.stream().min(Double::compare).get();
+
+        List<Double> fitnesses;
+        if(minFit<0.0)
+            fitnesses =aux.stream().map(elem->elem - minFit +1).collect(Collectors.toList());
+        else
+            fitnesses = aux;
+
+        double fitnessSum = fitnesses.stream().mapToDouble(e -> e).sum();
+
+        Random random = new Random(System.currentTimeMillis());
+        Set<Integer> selected = new HashSet<>();
+        Individual[] ret = new Individual[2];
+
+        //seleccion
+        double rand = random.nextDouble();
+
+
+        for (int qtyOfIndividual = 0; qtyOfIndividual < 2; qtyOfIndividual++) {
+            double acum=0.0;
+            double nextAcum=0.0;
+            boolean found = false;
+            for (int i = 0;!found; i++) {
+                //   System.out.println("pickeando");
+                //       if(selected.contains(i)) {
+
+                //            continue;
+                //       }
+                //double qj = getSumOfProbabilities(i, fitnesses, fitnessSum);
+                nextAcum= acum + (fitnesses.get(i) / fitnessSum);
+
+
+                if (acum < rand && rand <= nextAcum) {
+                    rand = random.nextDouble();
+                    found=true;
+                    ret[qtyOfIndividual] = population.get(i);
+                    selected.add(i);
+                }
+
+                acum=nextAcum;
+
+            }
+
+
+        }
+
+        return ret;
+    }
+
+
+
+
 
 }
