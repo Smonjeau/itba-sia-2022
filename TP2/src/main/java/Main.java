@@ -4,6 +4,7 @@ import Implementations.Pairing.SimplePairing;
 import Implementations.Pairing.UniformPairing;
 import Implementations.Selection.BoltzmannSelection;
 import Implementations.Selection.EliteSelection;
+import Implementations.Selection.TournamentSelection;
 import Implementations.Selection.TruncatedSelection;
 import com.opencsv.CSVParser;
 import com.opencsv.CSVParserBuilder;
@@ -106,6 +107,10 @@ public class Main {
             case "truncated":
                 selectionMethod = new TruncatedSelection();
                 break;
+            case "tournament":
+                double tournamentProbability = (double) json.get("tournament_prob");
+                selectionMethod = new TournamentSelection(tournamentProbability);
+                break;
             default:
                 System.err.println("Invalid selection method");
                 exit(1);
@@ -127,9 +132,11 @@ public class Main {
                 newPopulation.add(currentPopulation.get(j));
                 newPopulation.add(currentPopulation.get(j+1));
             }
+//            System.out.println(Arrays.deepToString(newPopulation.toArray()));
 
             currentPopulation = selectionMethod.select(newPopulation);
-
+//            System.out.println(currentPopulation.stream().filter(ind -> ind.getFitness() > 0).count());
+//            System.out.println(currentPopulation.stream().map(Individual::getFitness).reduce(0.0, Double::sum)/currentPopulation.size());
         }
 
         currentPopulation.sort(Comparator.comparingDouble(Individual::getFitness).reversed());
@@ -141,12 +148,15 @@ public class Main {
 
     private static List<Individual> generatePopulation(int p,int n,List<Item> items) {
         int i=0;
+        int aux;
         Random random = new Random(System.currentTimeMillis());
         List<Individual> population = new ArrayList<>();
+
         while(i<p){
             boolean[] bag = new boolean[n];
             for(int j=0;j<n;j++){
-                bag[j] = random.nextBoolean();
+                aux = random.nextInt(5);
+                bag[j] = aux > 3;
             }
             population.add(new Individual(bag));
             i++;

@@ -1,7 +1,5 @@
 package entities;
-
 import java.util.Arrays;
-import java.util.List;
 
 public class Individual {
     boolean[] bag;
@@ -68,8 +66,7 @@ public class Individual {
 
     @Override
     public String toString() {
-
-        return "bag=" + Arrays.toString(bag) + "\n benefit: " + calculateBenefit() + "\n weight: " + weightSum + "\n";
+        return "bag=" + Arrays.toString(bag) + "\n benefit: " + calculateBenefit() + " pro_benefit: " + fitness + "\n weight: " + weightSum + "\n";
     }
 
     @Override

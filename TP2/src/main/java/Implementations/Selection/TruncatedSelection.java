@@ -1,8 +1,6 @@
 package Implementations.Selection;
-
 import entities.Individual;
 import interfaces.Selection;
-
 import java.util.*;
 
 public class TruncatedSelection implements Selection {
