@@ -1,5 +1,6 @@
 package entities;
 import java.util.Arrays;
+import java.util.Random;
 
 public class Individual {
     boolean[] bag;
@@ -29,10 +30,10 @@ public class Individual {
     }
 
     public void mutate(double mutationChance){
-        for (int i=0; i < bag.length; i++){
-            if (Math.random() < mutationChance){
-                bag[i]= !bag[i];
-            }
+        Random rand=new Random(System.currentTimeMillis());
+        if(rand.nextDouble()<mutationChance){
+            int aux = rand.nextInt(bag.length);
+            bag[aux]=!bag[aux];
         }
         calculateWeightSum();
         calculateFitness();
