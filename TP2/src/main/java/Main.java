@@ -113,6 +113,9 @@ public class Main {
             case "roulette":
                 selectionMethod = new RouletteWheelSelection();
                 break;
+            case "rank":
+                selectionMethod = new RankSelection();
+                break;
             default:
                 System.err.println("Invalid selection method");
                 exit(1);

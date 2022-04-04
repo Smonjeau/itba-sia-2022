@@ -4,10 +4,10 @@ import entities.Individual;
 import interfaces.Pairing;
 
 import java.util.Arrays;
+import java.util.Random;
 
 public class MultiplePairingTwoPoints implements Pairing {
-    private final int p1 = 7;
-    private final int p2 = 50 ;
+
 
     @Override
     public Individual[] matchIndividuals(Individual i1, Individual i2) {
@@ -16,6 +16,19 @@ public class MultiplePairingTwoPoints implements Pairing {
         boolean[] bag1 = new boolean[i1.getBag().length];
         boolean[] bag2 = new boolean[i2.getBag().length];
 
+        Random random = new Random(System.currentTimeMillis());
+        int p1 = random.nextInt(101);
+        int p2 = p1;
+        while(p2==p1){
+            p2 = random.nextInt(101);
+        }
+        if(p1>p2) {
+            int aux = p2;
+
+            p2 = p1;
+
+            p1 = aux;
+        }
         int i;
         for(i=0;i<p1;i++){
             bag1[i] = i1.getBag()[i];
