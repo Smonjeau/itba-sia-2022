@@ -7,7 +7,7 @@ import java.util.List;
 public class BoltzmannSelection implements Selection {
 
     private final double T0;
-    private final double TC = 0;
+    private final double TC = 1;
     private final double k;
     private int t = 0;
 

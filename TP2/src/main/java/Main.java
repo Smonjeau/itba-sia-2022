@@ -123,8 +123,7 @@ public class Main {
         for (int i = 0; i < maxIterations; i++) {
             List<Individual> newPopulation = new ArrayList<>();
 
-            for (int j = 0; j < currentPopulation.size(); j += 2) {
-                // TODO change pairing selection method
+            for (int j = 0; j < currentPopulation.size()/2; j++) {
                 //{currentPopulation.get(j),currentPopulation.get(j+1)};
                 Individual[] individuals = pickIndividuals(currentPopulation);
 
@@ -163,11 +162,34 @@ public class Main {
             for(int j=0;j<n;j++){
                 aux = random.nextInt(5);
                 bag[j] = aux > 3;
+//                bag[j] = random.nextBoolean();
             }
-            population.add(new Individual(bag));
+//            population.add(new Individual(bag));
+//            i++;
+
+            Individual ind=new Individual(bag);
+
+            while (ind.getWeightSum()>Environment.weightLimit){
+                boolean erasure=false;
+                for (int j = random.nextInt(bag.length); !erasure; j++) {
+                    if (j==bag.length){
+                        j=0;
+                    }
+                    if (bag[j]){
+                        bag[j]=false;
+                        erasure=true;
+                        ind=new Individual(bag);
+                    }
+                }
+            }
+
+            population.add(ind);
+
             i++;
 
         }
+
+
 
         return population;
     }
@@ -190,6 +212,8 @@ public class Main {
 
         //seleccion
         double rand = random.nextDouble();
+//        System.out.println(rand);
+//        System.out.println(fitnessSum);
 
 
         for (int qtyOfIndividual = 0; qtyOfIndividual < 2; qtyOfIndividual++) {
@@ -203,7 +227,8 @@ public class Main {
                 //            continue;
                 //       }
                 //double qj = getSumOfProbabilities(i, fitnesses, fitnessSum);
-                nextAcum= acum + (fitnesses.get(i) / fitnessSum);
+//                System.out.println(i);
+                nextAcum = acum + (fitnesses.get(i) / fitnessSum);
 
 
                 if (acum < rand && rand <= nextAcum) {

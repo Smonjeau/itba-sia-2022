@@ -37,14 +37,21 @@ public class Individual {
         calculateWeightSum();
         calculateFitness();
     }
+
     private void calculateFitness(){
+        if (weightSum > Environment.weightLimit) {
+//            System.out.println(weightSum);
+            fitness = 1;
+            return;
+        }
+
         fitness = 0;
         for (int i =0; i < bag.length; i++){
             if (bag[i])
                 fitness += Environment.items.get(i).getBenefit();
         }
 
-        fitness = weightSum > Environment.weightLimit ? fitness - ((weightSum/ (double)Environment.weightLimit))*fitness*2 : fitness;
+//        fitness = weightSum > Environment.weightLimit ? fitness - ((weightSum/ (double)Environment.weightLimit))*fitness*2 : fitness;
     }
 
     private void calculateWeightSum(){

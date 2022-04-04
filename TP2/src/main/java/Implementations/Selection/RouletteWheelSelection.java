@@ -33,6 +33,7 @@ public class RouletteWheelSelection implements Selection {
         double rand = random.nextDouble();
         double acum=0.0;
         double nextAcum=0.0;
+        System.out.println(fitnessSum);
         while(toReturn.size()<nextGenSize){
 
             //esto es para evitar repes
