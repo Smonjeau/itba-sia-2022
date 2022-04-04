@@ -14,14 +14,14 @@ public class RouletteWheelSelection implements Selection {
         int genSize = generation.size();
 
 
-        List<Double> aux = generation.stream().map(Individual::getFitness).collect(Collectors.toList());
-        Double minFit = aux.stream().min(Double::compare).get();
+//        List<Double> aux = generation.stream().map(Individual::getFitness).collect(Collectors.toList());
+//        Double minFit = aux.stream().min(Double::compare).get();
 
-        List<Double> fitnesses;
-        if(minFit<0.0)
-            fitnesses =aux.stream().map(elem->elem - minFit +1).collect(Collectors.toList());
-        else
-            fitnesses = aux;
+        List<Double> fitnesses = generation.stream().map(Individual::getFitness).collect(Collectors.toList());
+//        if(minFit<0.0)
+//            fitnesses =aux.stream().map(elem->elem - minFit +1).collect(Collectors.toList());
+//        else
+//            fitnesses = aux;
 
         List<Individual> toReturn = new ArrayList<>();
         int i = 0;
@@ -33,7 +33,7 @@ public class RouletteWheelSelection implements Selection {
         double rand = random.nextDouble();
         double acum=0.0;
         double nextAcum=0.0;
-        System.out.println(fitnessSum);
+
         while(toReturn.size()<nextGenSize){
 
             //esto es para evitar repes

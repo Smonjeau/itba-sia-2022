@@ -1,7 +1,7 @@
 {
   "max_iterations": 2000,
-  "P": 500,
-  "pairing": "simple",
+  "P": 100,
+  "pairing": "multiple",
   "mutation_probability": 0.05,
   "selection": "boltzmann",
   "k": 0.75,

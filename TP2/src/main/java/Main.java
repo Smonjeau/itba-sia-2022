@@ -127,7 +127,6 @@ public class Main {
             List<Individual> newPopulation = new ArrayList<>();
 
             for (int j = 0; j < currentPopulation.size()/2; j++) {
-                //{currentPopulation.get(j),currentPopulation.get(j+1)};
                 Individual[] individuals = pickIndividuals(currentPopulation);
 
                 Individual[] newIndividuals = pairingMethod.matchIndividuals(individuals[0], individuals[1]);
@@ -136,21 +135,13 @@ public class Main {
 
                 newPopulation.addAll(Arrays.asList(newIndividuals));
                 newPopulation.addAll(Arrays.asList(individuals));
-
-                //newPopulation.add(currentPopulation.get(j));
-                //newPopulation.add(currentPopulation.get(j+1));
             }
-//            System.out.println(Arrays.deepToString(newPopulation.toArray()));
 
             currentPopulation = selectionMethod.select(newPopulation);
-//            System.out.println(currentPopulation.stream().filter(ind -> ind.getFitness() > 0).count());
- //           System.out.println(currentPopulation.stream().map(Individual::getFitness).reduce(0.0, Double::sum)/currentPopulation.size());
         }
 
         currentPopulation.sort(Comparator.comparingDouble(Individual::getFitness).reversed());
         System.out.println(currentPopulation.get(0));
-
-
 
     }
 
@@ -165,10 +156,7 @@ public class Main {
             for(int j=0;j<n;j++){
                 aux = random.nextInt(5);
                 bag[j] = aux > 3;
-//                bag[j] = random.nextBoolean();
             }
-//            population.add(new Individual(bag));
-//            i++;
 
             Individual ind=new Individual(bag);
 
@@ -215,8 +203,6 @@ public class Main {
 
         //seleccion
         double rand = random.nextDouble();
-//        System.out.println(rand);
-//        System.out.println(fitnessSum);
 
 
         for (int qtyOfIndividual = 0; qtyOfIndividual < 2; qtyOfIndividual++) {

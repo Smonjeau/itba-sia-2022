@@ -30,18 +30,19 @@ public class Individual {
     }
 
     public void mutate(double mutationChance){
-        Random rand=new Random(System.currentTimeMillis());
-        if(rand.nextDouble()<mutationChance){
-            int aux = rand.nextInt(bag.length);
-            bag[aux]=!bag[aux];
+
+        for (int i = 0; i < bag.length; i++) {
+            if (Math.random() < mutationChance) {
+                bag[i] = !bag[i];
+            }
         }
+
         calculateWeightSum();
         calculateFitness();
     }
 
-    private void calculateFitness(){
+    public void calculateFitness(){
         if (weightSum > Environment.weightLimit) {
-//            System.out.println(weightSum);
             fitness = 1;
             return;
         }
@@ -78,7 +79,7 @@ public class Individual {
 
     @Override
     public String toString() {
-        return "bag=" + Arrays.toString(bag) + "\n benefit: " + calculateBenefit() + " pro_benefit: " + fitness + "\n weight: " + weightSum + "\n";
+        return "bag=" + Arrays.toString(bag) + "\nbenefit: " + calculateBenefit() + "\nweight: " + weightSum + "\n";
     }
 
 

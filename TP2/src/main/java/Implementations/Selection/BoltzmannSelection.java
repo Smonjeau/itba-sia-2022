@@ -20,13 +20,14 @@ public class BoltzmannSelection implements Selection {
     public List<Individual> select(List<Individual> generation) {
         double T = getT();
 
-        double sum = generation.stream().mapToDouble(i -> Math.exp(i.getFitness() / T)).sum();
+        double sum = generation.stream().mapToDouble(i -> Math.exp((i.getFitness() / T)/100)).sum();
 
-        generation.forEach(i -> i.setFitness(Math.exp(i.getFitness()/T)/ sum));
+        generation.forEach(i -> i.setFitness(Math.exp((i.getFitness() / T)/100)/ sum));
 
         RouletteWheelSelection rouletteWheelSelection = new RouletteWheelSelection();
         List<Individual> newGeneration = rouletteWheelSelection.select(generation);
 
+        newGeneration.forEach(Individual::calculateFitness);
 
         t++;
 
