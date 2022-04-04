@@ -7,7 +7,7 @@ import java.util.List;
 public class BoltzmannSelection implements Selection {
 
     private final double T0;
-    private final double TC = 0;
+    private final double TC = 1;
     private final double k;
     private int t = 0;
 
@@ -24,8 +24,9 @@ public class BoltzmannSelection implements Selection {
 
         generation.forEach(i -> i.setFitness(Math.exp(i.getFitness()/T)/ sum));
 
-        // TODO call ruleta selection
-        List<Individual> newGeneration = new ArrayList<>();
+        RouletteWheelSelection rouletteWheelSelection = new RouletteWheelSelection();
+        List<Individual> newGeneration = rouletteWheelSelection.select(generation);
+
 
         t++;
 

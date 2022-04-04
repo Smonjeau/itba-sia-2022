@@ -38,17 +38,24 @@ public class Individual {
         calculateWeightSum();
         calculateFitness();
     }
+
     private void calculateFitness(){
+        if (weightSum > Environment.weightLimit) {
+//            System.out.println(weightSum);
+            fitness = 1;
+            return;
+        }
+
         fitness = 0;
         for (int i =0; i < bag.length; i++){
             if (bag[i])
                 fitness += Environment.items.get(i).getBenefit();
         }
 
-        fitness = weightSum > Environment.weightLimit ? fitness - ((weightSum/ (double)Environment.weightLimit) - 1)*fitness*2 : fitness;
 //        fitness = weightSum > Environment.weightLimit ? -(weightSum/ (double)Environment.weightLimit)*fitness : fitness;
 //        fitness = weightSum > Environment.weightLimit ? 1/(double) weightSum : fitness;
 //        fitness = weightSum > Environment.weightLimit ? Math.exp(-weightSum) : fitness;
+        //fitness = weightSum > Environment.weightLimit ? fitness - ((weightSum/ (double)Environment.weightLimit) - 1)*fitness*2 : fitness;
     }
 
     private void calculateWeightSum(){
@@ -59,7 +66,7 @@ public class Individual {
         }
     }
 
-    private int calculateBenefit() {
+    public int calculateBenefit() {
         int aux = 0;
         for (int i =0; i < bag.length; i++){
             if (bag[i])
@@ -68,10 +75,12 @@ public class Individual {
         return aux;
     }
 
+
     @Override
     public String toString() {
         return "bag=" + Arrays.toString(bag) + "\n benefit: " + calculateBenefit() + " pro_benefit: " + fitness + "\n weight: " + weightSum + "\n";
     }
+
 
     @Override
     public boolean equals(Object o) {
