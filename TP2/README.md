@@ -4,7 +4,7 @@ Algoritmo genético que resuelve el problema de la mochila utilizando distintos 
 
 ## Ejecución
 ```bash
-java -jar tp2-g18.jar <path_archivo_con_items> <path_archivo_.json>
+java -jar TP2-g18.jar <path_archivo_con_items> <path_archivo_.json>
 ```
 Se debe poner como parámetro la dirección al archivo que contiene los items.
 El resultado óptimo se imprime a pantalla.
