@@ -28,7 +28,7 @@ public class Main {
 
     public static void main(String[] args) throws CsvException, IOException, ParseException {
 
-        if(args.length != 1) {
+        if(args.length != 2) {
             System.err.println("data file must be passed as program argument");
             exit(1);
         }
@@ -66,8 +66,7 @@ public class Main {
         Environment.items = items;
 
         // Begin Parsing config.json
-        FileReader fr = new FileReader("src/main/resources/config.json");
-        //FileReader fr = new FileReader("C:\\Users\\gusta\\Desktop\\itba-sia-2022\\TP2\\src\\main\\resources\\config.json");
+        FileReader fr = new FileReader(args[1]);
         JSONObject json = (JSONObject) new JSONParser().parse(fr);
 
         String pairingMethodStr = (String) json.get("pairing");
