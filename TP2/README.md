@@ -24,7 +24,7 @@ Los posibles parámetros son:
 | `k`   | `double` |     | `boltzmann`: es la velocidad con la que decrece la temperatura. `tournament`: es la probabilidad utilizada en la decisión del ganador |
 | `T0`   | `int` |     | Temperatura inicial utilizada para el método de selección de `boltzmann` |
 
-
+tournament_prob
 ## Ejemplos de uso
 #### Elite
 ```json
