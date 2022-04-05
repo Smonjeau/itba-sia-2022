@@ -22,7 +22,7 @@ Los posibles parámetros son:
 | `mutation_probability`   | `double` |     | Probabilidad con la que se muta un gen |
 | `selection`   | `String` |  `boltzamnn`, `tournament`, `rank`, `roulette`, `elite`, `truncated`   | Método de selección ha utilizar |
 | `k`   | `double` |     | `boltzamnn`: es la velocidad con la que decrece la temperatura. `tournament`: es la probabilidad utilizada en la decisión del ganador |
-| `T0`   | `int` |     | Temperatura inicial utilizada para el método de selección de `boltzamnn` |
+| `T0`   | `int` |     | Temperatura inicial utilizada para el método de selección de `boltzmann` |
 
 
 ## Ejemplos de uso
@@ -38,7 +38,7 @@ Los posibles parámetros son:
 }
 ```
 
-#### boltzamnn
+#### boltzmann
 ```json
 // config.json
 {
