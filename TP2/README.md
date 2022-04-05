@@ -4,13 +4,13 @@ Algoritmo genético que resuelve el problema de la mochila utilizando distintos 
 
 ## Ejecución
 ```bash
-java -jar tp2-g18.jar <path_archivo_con_items>
+java -jar tp2-g18.jar <path_archivo_con_items> <path_archivo_.json>
 ```
 Se debe poner como parámetro la dirección al archivo que contiene los items.
 El resultado óptimo se imprime a pantalla.
 
 ## Archivo de configuración
-Los parámetros de ejecución se leeran del archivo config.json que se debe encontrar en la carpeta resources.
+Los parámetros de ejecución se leeran de un archivo .json que debe ser pasado como parámetro.
 
 Los posibles parámetros son:
 
