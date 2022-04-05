@@ -21,10 +21,11 @@ Los posibles parámetros son:
 | `pairing`   | `String` | `simple`, `multiple`, `uniformed`    | Método de cruza ha utilizar |
 | `mutation_probability`   | `double` |     | Probabilidad con la que se muta un gen |
 | `selection`   | `String` |  `boltzmann`, `tournament`, `rank`, `roulette`, `elite`, `truncated`   | Método de selección ha utilizar |
-| `k`   | `double` |     | `boltzmann`: es la velocidad con la que decrece la temperatura. `tournament`: es la probabilidad utilizada en la decisión del ganador |
+| `k`   | `double` |     | `boltzmann`: es la velocidad con la que decrece la temperatura. |
 | `T0`   | `int` |     | Temperatura inicial utilizada para el método de selección de `boltzmann` |
+| `tournament_prob`   | `double` |     | `tournament`: es la probabilidad utilizada en la decisión del ganador |
 
-tournament_prob
+
 ## Ejemplos de uso
 #### Elite
 ```json
