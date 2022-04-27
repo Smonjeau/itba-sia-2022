@@ -11,6 +11,12 @@ public class Connection {
         this.to = to;
     }
 
+    public Connection(double weight, Neuron from) {
+        this.weight = weight;
+        this.from = from;
+        this.to = null;
+    }
+
     public double getWeight() {
         return weight;
     }
@@ -24,6 +30,15 @@ public class Connection {
     }
 
     public void setWeight(double weight) {
-        this.weight = weight;
+        if (weight<0)
+            this.weight=0;
+        else if (weight>1)
+            this.weight=1;
+        else
+            this.weight = weight;
+    }
+
+    public void setTo(Neuron to) {
+        this.to = to;
     }
 }

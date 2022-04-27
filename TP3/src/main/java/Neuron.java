@@ -1,8 +1,10 @@
+import java.util.ArrayList;
 import java.util.List;
 
 public class Neuron {
     private int id;
     private double umbral;
+    private double learningRate;
 
 
     List<Connection> inputConnections;
@@ -11,13 +13,14 @@ public class Neuron {
 
     protected double excitation;
 
-    public Neuron(List<Connection> inputConnections, List<Connection> outputConnections,double umbral){
+    public Neuron(List<Connection> inputConnections,double umbral, double learningRate){
         this.inputConnections=inputConnections;
-        this.outputConnections=outputConnections;
+        this.outputConnections=new ArrayList<>();
 
         excitation = 0.0;
 
         this.umbral = umbral;
+        this.learningRate=learningRate;
     }
 
     public void calculateExcitation(){
@@ -32,6 +35,17 @@ public class Neuron {
 
     public double getActivation(){
         return excitation - umbral >= 0 ? 1.0 : -1.0;
+    }
+
+    public void adjustWeight(double expectedResult,int index){
+        //        ∆w = η ∗ (y [i x] − O).x[i x]
+        Connection connection=inputConnections.get(index);
+        double weight = connection.getWeight();
+        weight += learningRate * (expectedResult - getActivation()) * connection.getFrom().getActivation();
+        connection.setWeight(weight);
+
+
+
     }
 
 }

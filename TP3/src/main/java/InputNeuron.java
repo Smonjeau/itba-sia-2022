@@ -2,8 +2,8 @@ import java.util.List;
 
 public class InputNeuron extends Neuron{
 
-    public InputNeuron(List<Connection> inputConnections, List<Connection> outputConnections, double umbral) {
-        super(inputConnections, outputConnections, umbral);
+    public InputNeuron(double umbral,double learningRate) {
+        super(null, umbral,learningRate);
     }
 
 
