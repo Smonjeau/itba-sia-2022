@@ -3,8 +3,8 @@ import java.util.List;
 
 public class Neuron {
     private int id;
-    private double umbral;
-    private double learningRate;
+    protected double umbral;
+    protected double learningRate;
 
 
     List<Connection> inputConnections;
@@ -41,8 +41,9 @@ public class Neuron {
         //        ∆w = η ∗ (y [i x] − O).x[i x]
         Connection connection=inputConnections.get(index);
         double weight = connection.getWeight();
-        weight += learningRate * (expectedResult - getActivation()) * connection.getFrom().getActivation();
+        weight += learningRate * ((expectedResult - getActivation())/2) * connection.getFrom().getActivation();
         connection.setWeight(weight);
+
 
 
 

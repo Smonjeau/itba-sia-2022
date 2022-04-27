@@ -2,17 +2,20 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-public class Perceptron {
+public class PerceptronLineal {
 
     private List<InputNeuron> inputNeuronList;
 
-    private Neuron outputNeuron;
-    private double umbral;
-    private double learningRate;
-    private int[]expectedOutputs;
-    private int[][]expectedInputs;
+    private NeuronLineal outputNeuron;
 
-    public Perceptron(double umbral,double learningRate,int[]expectedOutputs,int[][]expectedInputs){
+    private double umbral;
+
+    private int N=3;
+    private double learningRate;
+    private double[]expectedOutputs;
+    private double[][]expectedInputs;
+
+    public PerceptronLineal(double umbral, double learningRate, double[]expectedOutputs, double[][]expectedInputs){
         this.umbral=umbral;
         inputNeuronList=new ArrayList<>();
         for (int i = 0; i < expectedInputs[0].length; i++) {
@@ -22,7 +25,7 @@ public class Perceptron {
         for (InputNeuron inputNeuron : inputNeuronList) {
             connections.add(new Connection(0, inputNeuron));
         }
-        outputNeuron=new Neuron(connections,umbral,learningRate);
+        outputNeuron=new NeuronLineal(connections,umbral,learningRate);
         connections.forEach(c ->c.setTo(outputNeuron));
         for (int i = 0; i < inputNeuronList.size(); i++) {
             //TODO hacer este lookup de forma segura
@@ -31,24 +34,27 @@ public class Perceptron {
         this.expectedOutputs=expectedOutputs;
         this.expectedInputs=expectedInputs;
     }
+//    public double g(double input,double beta){
+//        return Math.tanh(input*beta);
+//    }
 
     public List<Double> eval(){
         List<Double>weightList=new ArrayList<>();
-        int error = 1;
-        int errorMin = expectedInputs.length * 2;
+        double error=1;
+        double errorMin = Double.MAX_VALUE;
         int count=0;
         Random random=new Random(System.currentTimeMillis());
-        while (error>0&& count< 1000){
+        while (error>0&& count< 1000000){
             int run=random.nextInt(expectedInputs.length);
             for (int i = 0; i < expectedInputs[0].length; i++) {
                 inputNeuronList.get(i).setExcitation(expectedInputs[run][i]);
             }
             outputNeuron.calculateExcitation();
-            if (outputNeuron.getActivation()!=expectedOutputs[run]){
-                for (int i = 0; i < expectedInputs[run].length; i++) {
-                    outputNeuron.adjustWeight(expectedOutputs[run],i);
-                }
+
+            for (int i = 0; i < expectedInputs[run].length; i++) {
+                outputNeuron.adjustWeight(expectedOutputs[run],i);
             }
+
 
 
 //            inputNeuronList.get(x).adjustWeight();
@@ -63,14 +69,20 @@ public class Perceptron {
             }
             count++;
         }
-        if(count==1000)
+        if(count==1000000){
             System.out.println("exit due to iteration limit");
+
+        }
+
+        System.out.println(error);
         return weightList;
     }
 
 
-    public int calculateError(){
-        int error=0;
+
+
+    public double calculateError(){
+        double error=0;
 
         for (int i = 0; i < expectedInputs.length; i++) {
             for (int j = 0; j < expectedInputs[i].length; j++) {
@@ -78,8 +90,8 @@ public class Perceptron {
                 inputNeuronList.get(j).setExcitation(expectedInputs[i][j]);
             }
             outputNeuron.calculateExcitation();
-            error+=Math.abs(expectedOutputs[i]-outputNeuron.getActivation())/2;
-
+//            error+=Math.abs(outputNeuron.getActivation()-NeuronG.g(expectedOutputs[i],1))/2;
+            error+=Math.pow(expectedOutputs[i]-outputNeuron.getActivation(),2);
         }
         return error;
     }

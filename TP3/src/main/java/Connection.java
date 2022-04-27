@@ -30,11 +30,11 @@ public class Connection {
     }
 
     public void setWeight(double weight) {
-        if (weight<0)
-            this.weight=0;
-        else if (weight>1)
-            this.weight=1;
-        else
+//        if (weight<0)
+//            this.weight=0;
+//        else if (weight>1)
+//            this.weight=1;
+//        else
             this.weight = weight;
     }
 
