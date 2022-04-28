@@ -35,7 +35,8 @@ public class Main {
             input[i] = inputs.get(i);
         }
 
-        PerceptronLineal perceptron = new PerceptronLineal(0,1, output, input);
+//        PerceptronLineal perceptron = new PerceptronLineal(0,0.001, output, input);
+        PerceptronNoLineal perceptron = new PerceptronNoLineal(0,0.001, output, input);
         List<Double> doubleList = perceptron.eval();
 
         System.out.println(doubleList);
@@ -51,11 +52,12 @@ public class Main {
         while ((st = br.readLine()) != null) {
             st = st.replaceAll("[ ]+", " ").trim().replaceAll("[ ]", ",");
             String[] strArr = st.split(",");
-            double [] arr= new double[3];
+            double [] arr= new double[4];
 
-            arr[0]=Double.parseDouble(strArr[0]);
-            arr[1]=Double.parseDouble(strArr[1]);
-            arr[2]=Double.parseDouble(strArr[2]);
+            arr[0]=-1;
+            arr[1]=Double.parseDouble(strArr[0]);
+            arr[2]=Double.parseDouble(strArr[1]);
+            arr[3]=Double.parseDouble(strArr[2]);
             inputs.add(arr);
         }
 
@@ -70,7 +72,7 @@ public class Main {
         String st;
         while ((st = br.readLine()) != null) {
             st = st.trim();
-            outputs.add(Double.parseDouble(st));
+            outputs.add(Double.parseDouble(st)/100);
         }
 
         return outputs;
