@@ -4,54 +4,68 @@ import java.util.Random;
 
 public class PerceptronLineal {
 
-    private List<InputNeuron> inputNeuronList;
+    private final List<InputNeuron> inputNeuronList;
 
-    private NeuronLineal outputNeuron;
+    private final NeuronLineal outputNeuron;
 
     private double umbral;
 
-    private int N=3;
+    private final int N = 3;
     private double learningRate;
-    private double[]expectedOutputs;
-    private double[][]expectedInputs;
+    private final double[] expectedOutputs;
+    private final double[][] inputValues;
 
-    public PerceptronLineal(double umbral, double learningRate, double[]expectedOutputs, double[][]expectedInputs){
-        this.umbral=umbral;
-        inputNeuronList=new ArrayList<>();
-        for (int i = 0; i < expectedInputs[0].length; i++) {
-            inputNeuronList.add(new InputNeuron(umbral,learningRate));
+    public PerceptronLineal(double umbral, double learningRate, double[] expectedOutputs, double[][] inputValues){
+        this.umbral = umbral;
+        inputNeuronList = new ArrayList<>();
+
+        for (int i = 0; i < inputValues[0].length; i++) {
+            inputNeuronList.add(new InputNeuron(umbral, learningRate));
         }
+        
+        // For each input neuron a connection is created from de inputNeuron to ...
         List<Connection> connections= new ArrayList<>();
         for (InputNeuron inputNeuron : inputNeuronList) {
             connections.add(new Connection(0, inputNeuron));
         }
-        outputNeuron=new NeuronLineal(connections,umbral,learningRate);
+        
+        // Output neuron created with the connections of the input neurons
+        outputNeuron=new NeuronLineal(connections, umbral, learningRate);
+        
+        // Added to value for the connections previously created and set it to output neuron
         connections.forEach(c ->c.setTo(outputNeuron));
+        
+        // For each input neuron add their corresponding output connection that is in output neuron
         for (int i = 0; i < inputNeuronList.size(); i++) {
             //TODO hacer este lookup de forma segura
             inputNeuronList.get(i).outputConnections.add(outputNeuron.inputConnections.get(i));
         }
-        this.expectedOutputs=expectedOutputs;
-        this.expectedInputs=expectedInputs;
+        
+        this.expectedOutputs = expectedOutputs;
+        this.inputValues = inputValues;
     }
 //    public double g(double input,double beta){
 //        return Math.tanh(input*beta);
 //    }
 
     public List<Double> eval(){
-        List<Double>weightList=new ArrayList<>();
-        double error=1;
+        List<Double> weightList = new ArrayList<>();
+        double error = 1;
         double errorMin = Double.MAX_VALUE;
-        int count=0;
-        Random random=new Random(System.currentTimeMillis());
-        while (error>0&& count< 1000000){
-            int run=random.nextInt(expectedInputs.length);
-            for (int i = 0; i < expectedInputs[0].length; i++) {
-                inputNeuronList.get(i).setExcitation(expectedInputs[run][i]);
+        int count = 0;
+        Random random = new Random(System.currentTimeMillis());
+
+        while (error > 0 && count < 1000000){
+
+            int run = random.nextInt(inputValues.length);
+
+            for (int i = 0; i < inputValues[0].length; i++) {
+                inputNeuronList.get(i).setExcitation(inputValues[run][i]);
             }
+
             outputNeuron.calculateExcitation();
 
-            for (int i = 0; i < expectedInputs[run].length; i++) {
+            for (int i = 0; i < inputValues[run].length; i++) {
                 outputNeuron.adjustWeight(expectedOutputs[run],i);
             }
 
@@ -59,9 +73,9 @@ public class PerceptronLineal {
 
 //            inputNeuronList.get(x).adjustWeight();
 //            outputNeuron.getActivation();
-            error=calculateError();
-            if (error<errorMin){
-                errorMin=error;
+            error = calculateError();
+            if (error < errorMin){
+                errorMin = error;
                 weightList.clear();
                 for (Connection c:outputNeuron.inputConnections) {
                     weightList.add(c.getWeight());
@@ -69,7 +83,7 @@ public class PerceptronLineal {
             }
             count++;
         }
-        if(count==1000000){
+        if(count == 1000000){
             System.out.println("exit due to iteration limit");
 
         }
@@ -84,10 +98,10 @@ public class PerceptronLineal {
     public double calculateError(){
         double error=0;
 
-        for (int i = 0; i < expectedInputs.length; i++) {
-            for (int j = 0; j < expectedInputs[i].length; j++) {
+        for (int i = 0; i < inputValues.length; i++) {
+            for (int j = 0; j < inputValues[i].length; j++) {
 
-                inputNeuronList.get(j).setExcitation(expectedInputs[i][j]);
+                inputNeuronList.get(j).setExcitation(inputValues[i][j]);
             }
             outputNeuron.calculateExcitation();
 //            error+=Math.abs(outputNeuron.getActivation()-NeuronG.g(expectedOutputs[i],1))/2;

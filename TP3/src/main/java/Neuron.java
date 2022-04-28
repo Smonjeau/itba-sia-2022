@@ -25,7 +25,7 @@ public class Neuron {
 
     public void calculateExcitation(){
         double sum = 0.0;
-        for(Connection connection : inputConnections){
+        for(Connection connection : inputConnections) {
             sum += connection.getWeight()*connection.getFrom().getActivation();
         }
         this.excitation=sum;
