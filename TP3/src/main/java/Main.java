@@ -42,22 +42,29 @@ public class Main {
         System.out.println(doubleList);
     }
 
-    private static List<double[]> readInputValues(String fileName) throws IOException {
+        List<Row> rows = new ArrayList<>();
+
+        for (int i = 0; i < inputs.size(); i++) {
+            rows.add(new Row(inputs.get(i), outputs.get(i)));
+        }
+
+    private static List<List<Double>> readInputValues(String fileName) throws IOException {
         File file = new File(fileName);
         BufferedReader br = new BufferedReader(new FileReader(file));
 
         String st;
-        List<double[]>inputs=new ArrayList<>();
+        List<List<Double>>inputs=new ArrayList<>();
 
         while ((st = br.readLine()) != null) {
             st = st.replaceAll("[ ]+", " ").trim().replaceAll("[ ]", ",");
             String[] strArr = st.split(",");
-            double [] arr= new double[4];
+            List<Double> arr = new ArrayList<>();
 
-            arr[0]=-1;
-            arr[1]=Double.parseDouble(strArr[0]);
-            arr[2]=Double.parseDouble(strArr[1]);
-            arr[3]=Double.parseDouble(strArr[2]);
+            arr.add(-1.0);
+            for (String s : strArr) {
+                arr.add(Double.parseDouble(s));
+            }
+
             inputs.add(arr);
         }
 
@@ -72,7 +79,7 @@ public class Main {
         String st;
         while ((st = br.readLine()) != null) {
             st = st.trim();
-            outputs.add(Double.parseDouble(st)/100);
+            outputs.add(Double.parseDouble(st));
         }
 
         return outputs;
