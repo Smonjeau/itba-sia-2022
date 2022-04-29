@@ -7,12 +7,23 @@ public class Neuron2 {
     private double[] weights;
 
     public Neuron2(int prevLayerSize) {
-        this.value = value;
         this.weights = new double[prevLayerSize];
 
+    }
 
+    public double getValue() {
+        return value;
+    }
 
+    public void setValue(double value) {
+        this.value = value;
+    }
 
+    public double[] getWeights() {
+        return weights;
+    }
 
+    public void setWeights(double[] weights) {
+        this.weights = weights;
     }
 }
