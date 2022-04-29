@@ -1,22 +1,19 @@
-import java.util.ArrayList;
-import java.util.List;
-
 public class Layer {
-    private Neuron2[] neurons;
+    private Neuron[] neurons;
     private int layerSize;
 
-    public Layer(int layerSize,int prevLayerSize) {
+    public Layer(int layerSize, int prevLayerSize) {
         this.layerSize = layerSize;
 
-        neurons = new Neuron2 [prevLayerSize];
+        neurons = new Neuron[prevLayerSize];
 
         for (int i = 0; i < neurons.length ; i++) {
-            neurons[i] = new Neuron2(prevLayerSize);
+            neurons[i] = new Neuron(prevLayerSize);
         }
 
     }
 
-    public Neuron2[] getNeurons() {
+    public Neuron[] getNeurons() {
         return neurons;
     }
 

@@ -86,4 +86,5 @@ public class MultiLayerPerceptron implements PerceptronInterface{
 
         return toReturn;
     }
+
 }

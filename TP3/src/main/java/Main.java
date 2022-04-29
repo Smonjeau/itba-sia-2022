@@ -1,52 +1,99 @@
 import java.io.*;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Main {
 
     private static String INPUT_FILE_NAME_EJ2 = "src/main/resources/TP3-ej2-Conjunto-entrenamiento.txt";
+//    private static String INPUT_FILE_NAME_EJ2 = "src/main/resources/test_input.txt";
     private static String EXPECTED_FILE_NAME_EJ2 = "src/main/resources/TP3-ej2-Salida-deseada.txt";
+//    private static String EXPECTED_FILE_NAME_EJ2 = "src/main/resources/test_output.txt";
     private static String INPUT_FILE_NAME_EJ3 = "TP3-ej3-mapa-de-pixeles-digitos-decimales.txt";
 
     public static void main(String[] args) throws IOException {
-        Ej2();
+        Ej1();
+        Ej2Lineal();
+        Ej2NotLineal();
     }
 
     public static void Ej1(){
-        int[][]input={{-1, 1}, {1,-1}, {-1,-1}, {1, 1}};
-        int[]output={1,1,-1,-1};
-//        int[]output={-1,-1,-1,1};
-        Perceptron perceptron=new Perceptron(0.5,0.1,output,input);
-        List<Double> doubleList=perceptron.eval();
-        System.out.println(doubleList);
-    }
+        Double[][]input={{-1.0, 1.0}, {1.0,-1.0}, {-1.0,-1.0}, {1.0, 1.0}};
+        Double[]output={1.0,1.0,-1.0,-1.0};
+//        Double[]output={-1.0,-1.0,-1.0,1.0};
 
-    public static void Ej2() throws IOException {
+        List<Row> rows = new ArrayList<>();
 
-        List<Double> outputs = readExpectedValues(EXPECTED_FILE_NAME_EJ2);
-        List<double[]> inputs = readInputValues(INPUT_FILE_NAME_EJ2);
-
-
-        double[] output = new double[outputs.size()];
-        double[][] input = new double[outputs.size()][];
-
-        for (int i = 0; i < outputs.size(); i++) {
-            output[i] = outputs.get(i);
-            input[i] = inputs.get(i);
+        for (int i = 0; i < input.length; i++) {
+            rows.add(new Row(Arrays.asList(input[i]), output[i]));
         }
 
-//        PerceptronLineal perceptron = new PerceptronLineal(0,0.001, output, input);
-        PerceptronNoLineal perceptron = new PerceptronNoLineal(0,0.001, output, input);
-        List<Double> doubleList = perceptron.eval();
 
+        StepPerceptron perceptron = new StepPerceptron(2, 0.1, 0.5);
+//                new StepPerceptron(0.5,0.1,output,input);
+        List<Double> doubleList = perceptron.train(rows);
         System.out.println(doubleList);
     }
+
+
+    private static void Ej2Lineal() throws IOException {
+        List<Double> outputs = readExpectedValues(EXPECTED_FILE_NAME_EJ2);
+
+        Double min = outputs.stream().min(Double::compare).orElse(0.0);
+        Double max = outputs.stream().max(Double::compare).orElse(0.0);
+
+        for (int i = 0; i < outputs.size(); i++) {
+            outputs.set(i, 2*(outputs.get(i) - min)/(max - min) - 1);
+        }
+
+        List<List<Double>> inputs = readInputValues(INPUT_FILE_NAME_EJ2);
+
+        if (inputs.size() != outputs.size()) {
+            System.out.println("Invalid amount of inputs and expected outputs");
+            return;
+        }
 
         List<Row> rows = new ArrayList<>();
 
         for (int i = 0; i < inputs.size(); i++) {
             rows.add(new Row(inputs.get(i), outputs.get(i)));
         }
+
+//        PLineal perceptron = new PLineal(rows, inputs.get(0).size(), 0.001);
+        LinealPerceptron perceptron = new LinealPerceptron(inputs.get(0).size(), 0.001);
+        List<Double> weights = perceptron.train(rows);
+
+        System.out.println(weights);
+    }
+
+    private static void Ej2NotLineal() throws IOException {
+        List<Double> outputs = readExpectedValues(EXPECTED_FILE_NAME_EJ2);
+
+        Double min = outputs.stream().min(Double::compare).orElse(0.0);
+        Double max = outputs.stream().max(Double::compare).orElse(0.0);
+
+        for (int i = 0; i < outputs.size(); i++) {
+            outputs.set(i, 2*(outputs.get(i) - min)/(max - min) - 1);
+        }
+
+        List<List<Double>> inputs = readInputValues(INPUT_FILE_NAME_EJ2);
+
+        if (inputs.size() != outputs.size()) {
+            System.out.println("Invalid amount of inputs and expected outputs");
+            return;
+        }
+
+        List<Row> rows = new ArrayList<>();
+
+        for (int i = 0; i < inputs.size(); i++) {
+            rows.add(new Row(inputs.get(i), outputs.get(i)));
+        }
+
+        NotLinealPerceptron perceptron = new NotLinealPerceptron(inputs.get(0).size(), 0.01);
+        List<Double> weights = perceptron.train(rows);
+
+        System.out.println(weights);
+    }
 
     private static List<List<Double>> readInputValues(String fileName) throws IOException {
         File file = new File(fileName);
