@@ -5,7 +5,7 @@ public class Layer {
     public Layer(int layerSize, int prevLayerSize) {
         this.layerSize = layerSize;
 
-        neurons = new Neuron[prevLayerSize];
+        neurons = new Neuron[layerSize];
 
         for (int i = 0; i < neurons.length ; i++) {
             neurons[i] = new Neuron(prevLayerSize);
