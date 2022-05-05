@@ -10,6 +10,7 @@ import java.util.List;
 
 public class Main {
 
+    /*
 
     private static String INPUT_FILE_NAME_EJ2 = "src/main/resources/TP3-ej2-Conjunto-entrenamiento.txt";
     private static String EXPECTED_FILE_NAME_EJ2 = "src/main/resources/TP3-ej2-Salida-deseada.txt";
@@ -17,13 +18,13 @@ public class Main {
 
 
 
-     /*
+  */
     private static String INPUT_FILE_NAME_EJ2 = "C:\\Users\\gusta\\Desktop\\itba-sia-2022\\TP3\\src\\main\\resources\\TP3-ej2-Conjunto-entrenamiento.txt";
     private static String EXPECTED_FILE_NAME_EJ2 = "C:\\Users\\gusta\\Desktop\\itba-sia-2022\\TP3\\src\\main\\resources\\TP3-ej2-Salida-deseada.txt";
     private static String INPUT_FILE_NAME_EJ3 = "C:\\Users\\gusta\\Desktop\\itba-sia-2022\\TP3\\src\\main\\resources\\TP3-ej3-mapa-de-pixeles-digitos-decimales.txt";
 
 
-      */
+
     public static void main(String[] args) throws IOException, ParseException {
 
         FileReader fr = new FileReader(args[0]);
@@ -56,7 +57,7 @@ public class Main {
                 Ej3PartThree(learningRate, limit);
                 break;
             default:
-                System.out.println("Invalid exercise parameter");
+                System.err.println("Invalid exercise parameter");
                 return;
         }
 
@@ -202,28 +203,109 @@ public class Main {
         List<Row> trainList;
         List<Row> testList ;
 
-        for (int i = 0; i <k ; i++) {
-            testList = subLists.get(i);
-            trainList = new ArrayList<>();
-            for (int j = 0; j <k ; j++) {
-                if (i != j)
-                    trainList.addAll(subLists.get(j));
-            }
-            double err=0;
-            for (int epoch = 0; epoch < limit; epoch++) {
-                err = multiLayerPerceptron.train(trainList,outputs);
-                //System.out.println(err);
-            }
-            for(Row r: testList){
-                System.out.println(r.getExpectedValue());
-                double[] auxInput = new double[r.getValues().size()];
-                for (int j = 0; j < r.getValues().size(); j++) {
-                    auxInput[j] = r.getValues().get(j);
-                }
-                System.out.println(Arrays.toString(multiLayerPerceptron.eval(auxInput)));
-            }
-        }
 
+        BufferedWriter writer = new BufferedWriter(new FileWriter("accuracy.csv"));
+        writer.write("epoch,accuracyTrain,accuracyTest\n");
+        BufferedWriter writer2 = new BufferedWriter(new FileWriter("precision.csv"));
+        writer2.write("epoch,precisionTrain,precisionTest\n");
+        while(limit<=40000) {
+      //      for (int i = 0; i < k; i++) {
+                int fp = 0, fn = 0, tp = 0, tn = 0;
+
+                int i =0;
+                testList = subLists.get(i);
+                trainList = new ArrayList<>();
+                for (int j = 0; j < k; j++) {
+                    if (i != j)
+                        trainList.addAll(subLists.get(j));
+                }
+                double err = 0;
+                outputs = new double[10][1];
+                for(int row = 0;row<trainList.size();row++)
+                    outputs[row] = new double[]{trainList.get(row).getExpectedValue()};
+                for (int epoch = 0; epoch < limit; epoch++) {
+                    err = multiLayerPerceptron.train(trainList, outputs);
+                }
+
+                for (Row r : trainList) {
+                    //System.out.println(r.getExpectedValue());
+                    double[] auxInput = new double[r.getValues().size()];
+                    for (int j = 0; j < r.getValues().size(); j++) {
+                        auxInput[j] = r.getValues().get(j);
+                    }
+
+
+                    double [] resultList = multiLayerPerceptron.eval(auxInput);
+                    double result= resultList[0];
+                //    System.out.println(result);
+                //    System.out.println(r.getExpectedValue());
+                    if ((r.getExpectedValue() == 1.0)) {
+                        if (result < 0)
+                            fn++;
+                        else if (result > 0)
+                            tp++;
+
+                    } else if (r.getExpectedValue() == -1.0) {
+                        if (result < 0)
+                            tn++;
+                        else if (result > 0)
+                            fp++;
+                    }
+
+
+
+                }
+                double accuracyTrain = ((double) tp + tn) / (tp + tn + fn + fp);
+                double precisionTrain = ((double) tp) / (tp + fp);
+
+                for (Row r : testList) {
+                    //System.out.println(r.getExpectedValue());
+                    double[] auxInput = new double[r.getValues().size()];
+                    for (int j = 0; j < r.getValues().size(); j++) {
+                        auxInput[j] = r.getValues().get(j);
+                    }
+
+
+                    double result = multiLayerPerceptron.eval(auxInput)[0];
+                    if ((r.getExpectedValue() == 1.0)) {
+                        if (result < 0)
+                            fn++;
+                        else if (result > 0)
+                            tp++;
+
+                    } else if (r.getExpectedValue() == -1.0) {
+                        if (result < 0)
+                            tn++;
+                        else if (result > 0)
+                            fp++;
+                    }
+
+                }
+                double accuracyTest = ((double) tp + tn) / (tp + tn + fn + fp);
+                double precisionTest = ((double) tp) / (tp + fp);
+                double recall = (double) tp / (tp + fn);
+                double f1Score = 2 * precisionTest * recall / (precisionTest + recall);
+/*
+            System.out.println("accuracy:"+accuracy);
+            System.out.println("precision:"+precision);
+            System.out.println("recall:"+recall);
+            System.out.println("f1Score:"+f1Score);
+
+            System.out.println("---------------------------------");
+
+ */
+
+                writer.write(limit+","+accuracyTrain+","+accuracyTest+"\n");
+                writer2.write(limit+","+precisionTrain+","+precisionTest+"\n");
+                multiLayerPerceptron = new MultiLayerPerceptron(new int[]
+                        {pixelMap[0].length, 5, 1}, learningRate);
+
+       //     }
+            limit+=250;
+
+        }
+        writer.close();
+        writer2.close();
 
 
 
@@ -273,12 +355,16 @@ public class Main {
 
 
         for (int i = 0; i <10 ; i++) {
+            System.out.println(rows.get(i).getExpectedValue());
             double[] auxInput = new double[rows.get(i).getValues().size()];
             for (int j = 0; j < rows.get(i).getValues().size(); j++) {
                 auxInput[j] = rows.get(i).getValues().get(j);
             }
-            System.out.println(Arrays.toString(multiLayerPerceptron.eval(auxInput)));
+
         }
+
+
+
     }
 
     private static List<List<Double>> readInputValues(String fileName) throws IOException {
