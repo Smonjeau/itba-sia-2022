@@ -10,19 +10,21 @@ import java.util.List;
 
 public class Main {
 
-    /*
+
 
     private static String INPUT_FILE_NAME_EJ2 = "src/main/resources/TP3-ej2-Conjunto-entrenamiento.txt";
     private static String EXPECTED_FILE_NAME_EJ2 = "src/main/resources/TP3-ej2-Salida-deseada.txt";
     private static String INPUT_FILE_NAME_EJ3 = "TP3-ej3-mapa-de-pixeles-digitos-decimales.txt";
 
 
+/*
 
-  */
     private static String INPUT_FILE_NAME_EJ2 = "C:\\Users\\gusta\\Desktop\\itba-sia-2022\\TP3\\src\\main\\resources\\TP3-ej2-Conjunto-entrenamiento.txt";
     private static String EXPECTED_FILE_NAME_EJ2 = "C:\\Users\\gusta\\Desktop\\itba-sia-2022\\TP3\\src\\main\\resources\\TP3-ej2-Salida-deseada.txt";
     private static String INPUT_FILE_NAME_EJ3 = "C:\\Users\\gusta\\Desktop\\itba-sia-2022\\TP3\\src\\main\\resources\\TP3-ej3-mapa-de-pixeles-digitos-decimales.txt";
 
+
+ */
 
 
     public static void main(String[] args) throws IOException, ParseException {
@@ -335,7 +337,12 @@ public class Main {
             for (int j = 0; j < 7 ; j++) {
                 //esto es pq esta el umbral como input
                 for (int k = 1; k < 6; k++) {
-                    pixelMap[i][aux++] = inputsList.get(j+7*i).get(k);
+                    if(inputsList.get(j+7*i).get(k)==0.0)
+
+                        pixelMap[i][aux++] = -1.0;
+                    else if(inputsList.get(j+7*i).get(k)==1.0)
+                        pixelMap[i][aux++] = 1.0;
+
                 }
             }
 
@@ -355,11 +362,11 @@ public class Main {
 
 
         for (int i = 0; i <10 ; i++) {
-            System.out.println(rows.get(i).getExpectedValue());
             double[] auxInput = new double[rows.get(i).getValues().size()];
             for (int j = 0; j < rows.get(i).getValues().size(); j++) {
                 auxInput[j] = rows.get(i).getValues().get(j);
             }
+            System.out.println(Arrays.toString(multiLayerPerceptron.eval(auxInput)));
 
         }
 
@@ -403,5 +410,6 @@ public class Main {
 
         return outputs;
     }
+
 
 }
