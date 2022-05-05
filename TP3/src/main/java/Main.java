@@ -1,3 +1,7 @@
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
+import org.json.simple.parser.ParseException;
+
 import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -8,9 +12,7 @@ public class Main {
 
 
     private static String INPUT_FILE_NAME_EJ2 = "src/main/resources/TP3-ej2-Conjunto-entrenamiento.txt";
-//    private static String INPUT_FILE_NAME_EJ2 = "src/main/resources/test_input.txt";
     private static String EXPECTED_FILE_NAME_EJ2 = "src/main/resources/TP3-ej2-Salida-deseada.txt";
-//    private static String EXPECTED_FILE_NAME_EJ2 = "src/main/resources/test_output.txt";
     private static String INPUT_FILE_NAME_EJ3 = "TP3-ej3-mapa-de-pixeles-digitos-decimales.txt";
 
 
@@ -22,19 +24,53 @@ public class Main {
 
 
       */
-    public static void main(String[] args) throws IOException {
-        //Ej1();
-       // Ej2Lineal();
-       // Ej2NotLineal();
-      //  Ej3PartOne();
-        Ej3PartTwo();
-       // Ej3PartThree();
+    public static void main(String[] args) throws IOException, ParseException {
+
+        FileReader fr = new FileReader(args[0]);
+        JSONObject json = (JSONObject) new JSONParser().parse(fr);
+
+        String exercise = (String) json.get("exercise");
+        Double learningRate = (Double) json.get("learningRate");
+
+        int limit = ((Long) json.get("limit")).intValue();
+
+        switch(exercise) {
+            case "and":
+            case "xor":
+                Double bias = (Double) json.get("bias");
+                Ej1(exercise, learningRate, bias, limit);
+                break;
+            case "linear":
+                Ej2Lineal(learningRate, limit);
+                break;
+            case "notLinear":
+                Ej2NotLineal(learningRate, limit);
+                break;
+            case "multilayerXor":
+                Ej3PartOne(learningRate, limit);
+                break;
+            case "oddEven":
+                Ej3PartTwo(learningRate, limit);
+                break;
+            case "oddEven2":
+                Ej3PartThree(learningRate, limit);
+                break;
+            default:
+                System.out.println("Invalid exercise parameter");
+                return;
+        }
+
     }
 
-    public static void Ej1(){
+    public static void Ej1(String type, double learningRate, double bias, int limit){
         Double[][]input={{-1.0, 1.0}, {1.0,-1.0}, {-1.0,-1.0}, {1.0, 1.0}};
-        Double[]output={1.0,1.0,-1.0,-1.0};
-//        Double[]output={-1.0,-1.0,-1.0,1.0};
+        Double[]output;
+
+        if (type.equals("and")) {
+            output = new Double[]{1.0, 1.0, -1.0, -1.0};
+        } else {
+            output = new Double[]{-1.0,-1.0,-1.0,1.0};
+        }
 
         List<Row> rows = new ArrayList<>();
 
@@ -42,15 +78,12 @@ public class Main {
             rows.add(new Row(Arrays.asList(input[i]), output[i]));
         }
 
-
-        StepPerceptron perceptron = new StepPerceptron(2, 0.1, 0.5);
-//                new StepPerceptron(0.5,0.1,output,input);
+        StepPerceptron perceptron = new StepPerceptron(input[0].length, learningRate, bias, limit);
         List<Double> doubleList = perceptron.train(rows);
         System.out.println(doubleList);
     }
 
-
-    private static void Ej2Lineal() throws IOException {
+    private static void Ej2Lineal(double learningRate, int limit) throws IOException {
         List<Double> outputs = readExpectedValues(EXPECTED_FILE_NAME_EJ2);
 
         Double min = outputs.stream().min(Double::compare).orElse(0.0);
@@ -73,14 +106,13 @@ public class Main {
             rows.add(new Row(inputs.get(i), outputs.get(i)));
         }
 
-//        PLineal perceptron = new PLineal(rows, inputs.get(0).size(), 0.001);
-        LinealPerceptron perceptron = new LinealPerceptron(inputs.get(0).size(), 0.001);
+        LinealPerceptron perceptron = new LinealPerceptron(inputs.get(0).size(), learningRate, limit);
         List<Double> weights = perceptron.train(rows);
 
         System.out.println(weights);
     }
 
-    private static void Ej2NotLineal() throws IOException {
+    private static void Ej2NotLineal(double learningRate, int limit) throws IOException {
         List<Double> outputs = readExpectedValues(EXPECTED_FILE_NAME_EJ2);
 
         Double min = outputs.stream().min(Double::compare).orElse(0.0);
@@ -103,26 +135,26 @@ public class Main {
             rows.add(new Row(inputs.get(i), outputs.get(i)));
         }
 
-        NotLinealPerceptron perceptron = new NotLinealPerceptron(inputs.get(0).size(), 0.01);
+        NotLinealPerceptron perceptron = new NotLinealPerceptron(inputs.get(0).size(), learningRate, limit);
         List<Double> weights = perceptron.train(rows);
 
         System.out.println(weights);
     }
 
-    private static void Ej3PartOne(){
+    private static void Ej3PartOne(double learningRate, int limit){
 
         Double[][]input={{-1.0, 1.0}, {1.0,-1.0}, {-1.0,-1.0}, {1.0, 1.0}};
         double[][]output={{1.0}, {1.0}, {-1.0}, {-1.0}};
 
         MultiLayerPerceptron multiLayerPerceptron = new MultiLayerPerceptron(new int[]
-                {input[0].length,5,1},0.001);
+                {input[0].length,5,1}, learningRate);
 
         List<Row> rows = new ArrayList<>();
 
         for (int i = 0; i < input.length; i++) {
             rows.add(new Row(Arrays.asList(input[i]), output[i][0]));
         }
-        for (int i = 0; i < 100000; i++) {
+        for (int i = 0; i < limit; i++) {
             double err = multiLayerPerceptron.train(rows,output);
             System.out.println(err);
         }
@@ -132,7 +164,7 @@ public class Main {
 
     }
 
-    private static void Ej3PartTwo() throws IOException {
+    private static void Ej3PartTwo(double learningRate, int limit) throws IOException {
         double[][] outputs = new double[][]{{1.0},{-1.0},{1.0},{-1.0},{1.0},{-1.0},{1.0},{-1.0},{1.0},{-1.0}};
         List<List<Double>> inputsList = readInputValues(INPUT_FILE_NAME_EJ3);
 
@@ -150,7 +182,7 @@ public class Main {
 
         }
         MultiLayerPerceptron multiLayerPerceptron = new MultiLayerPerceptron(new int[]
-                {pixelMap[0].length,5,1},0.001);
+                {pixelMap[0].length,5,1}, learningRate);
 
         List<Row> rows = new ArrayList<>();
 
@@ -178,7 +210,7 @@ public class Main {
                     trainList.addAll(subLists.get(j));
             }
             double err=0;
-            for (int epoch = 0; epoch < 10000; epoch++) {
+            for (int epoch = 0; epoch < limit; epoch++) {
                 err = multiLayerPerceptron.train(trainList,outputs);
                 //System.out.println(err);
             }
@@ -197,9 +229,7 @@ public class Main {
 
     }
 
-
-
-    private static void Ej3PartThree() throws IOException {
+    private static void Ej3PartThree(double learningRate, int limit) throws IOException {
         double[][] outputs = new double[][]{
                 {1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0},
                 {-1.0,1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0,-1.0},
@@ -229,14 +259,14 @@ public class Main {
 
         }
         MultiLayerPerceptron multiLayerPerceptron = new MultiLayerPerceptron(new int[]
-                {pixelMap[0].length,3,10},0.01);
+                {pixelMap[0].length,3,10}, learningRate);
 
         List<Row> rows = new ArrayList<>();
 
         for (int i = 0; i < pixelMap.length; i++)
             rows.add(new Row(Arrays.asList(pixelMap[i]), outputs[i][0]));
 
-        for (int i = 0; i < 400000; i++) {
+        for (int i = 0; i < limit; i++) {
             double err = multiLayerPerceptron.train(rows,outputs);
             System.out.println(err);
         }
@@ -250,6 +280,7 @@ public class Main {
             System.out.println(Arrays.toString(multiLayerPerceptron.eval(auxInput)));
         }
     }
+
     private static List<List<Double>> readInputValues(String fileName) throws IOException {
         File file = new File(fileName);
         BufferedReader br = new BufferedReader(new FileReader(file));

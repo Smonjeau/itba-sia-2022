@@ -8,13 +8,14 @@ public class NotLinealPerceptron {
     private final int dim;
     private final double learningRate;
     private static final double DELTA = 0.001;
-    private static final int LIMIT = 10000;
+    private final int limit;
     private final double beta = 1;
     private double minError = 1;
 
-    public NotLinealPerceptron(int dim, double learningRate) {
+    public NotLinealPerceptron(int dim, double learningRate, int limit) {
         this.dim = dim;
         this.learningRate = learningRate;
+        this.limit = limit;
     }
 
     public List<Double> train(List<Row> rows) {
@@ -30,7 +31,7 @@ public class NotLinealPerceptron {
         for (int i = 0; i < dim; i++)
             weights.add(0.0);
 
-        while (error > DELTA && count < LIMIT) {
+        while (error > DELTA && count < limit) {
             int run = random.nextInt(rows.size());
             Row activeRow = rows.get(run);
 
@@ -40,7 +41,6 @@ public class NotLinealPerceptron {
             }
 
             for (int i = 0; i < dim; i++) {
-                // calculate new weight
                 weights.set(i, weights.get(i) + deltaW(activeRow, i, h));
             }
 

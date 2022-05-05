@@ -4,8 +4,8 @@ public class StepPerceptron extends LinealPerceptron  {
     private final double bias;
 
 
-    public StepPerceptron(int dim, double learningRate, double bias) {
-        super(dim, learningRate);
+    public StepPerceptron(int dim, double learningRate, double bias, int limit) {
+        super(dim, learningRate, limit);
         this.bias = bias;
     }
 
