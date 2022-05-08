@@ -16,6 +16,6 @@ public class StepPerceptron extends LinealPerceptron  {
 
     @Override
     public double g(double value) {
-        return value >= 0 ? 1 : 0;
+        return value >= 0 ? 1 : -1;
     }
 }

@@ -70,9 +70,9 @@ public class Main {
         Double[]output;
 
         if (type.equals("and")) {
-            output = new Double[]{1.0, 1.0, -1.0, -1.0};
+            output = new Double[]{-1.0, -1.0, -1.0, 1.0};
         } else {
-            output = new Double[]{-1.0,-1.0,-1.0,1.0};
+            output = new Double[]{1.0,-.0,-1.0,-1.0};
         }
 
         List<Row> rows = new ArrayList<>();
