@@ -18,7 +18,7 @@ public class NotLinealPerceptron {
         this.limit = limit;
     }
 
-    public List<Double> train(List<Row> rows) {
+    public double train(List<Row> rows) {
         this.rows = rows;
         Random random = new Random(System.currentTimeMillis());
         Double error = 1.0;
@@ -55,8 +55,7 @@ public class NotLinealPerceptron {
             count++;
         }
 
-        System.out.println("Error promedio: "+minError*(1.0/ rows.size()));
-        return minWeights;
+        return minError/rows.size();
     }
 
 

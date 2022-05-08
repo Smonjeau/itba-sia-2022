@@ -82,8 +82,8 @@ public class Main {
         }
 
         StepPerceptron perceptron = new StepPerceptron(input[0].length, learningRate, bias, limit);
-        List<Double> doubleList = perceptron.train(rows);
-        System.out.println(doubleList);
+        double minError = perceptron.train(rows);
+        System.out.println(minError);
     }
 
     private static void Ej2Lineal(double learningRate, int limit) throws IOException {
@@ -110,9 +110,11 @@ public class Main {
         }
 
         LinealPerceptron perceptron = new LinealPerceptron(inputs.get(0).size(), learningRate, limit);
-        List<Double> weights = perceptron.train(rows);
+        double minError = perceptron.train(rows);
 
-        System.out.println(weights);
+        System.out.println(minError);
+        minError = (minError + 1)*(max - min)/2.0 + min;
+        System.out.println(minError);
     }
 
     private static void Ej2NotLineal(double learningRate, int limit) throws IOException {
@@ -139,9 +141,10 @@ public class Main {
         }
 
         NotLinealPerceptron perceptron = new NotLinealPerceptron(inputs.get(0).size(), learningRate, limit);
-        List<Double> weights = perceptron.train(rows);
-
-        System.out.println(weights);
+        double minError= perceptron.train(rows);
+        System.out.println(minError);
+        minError = (minError + 1)*(max - min)/2 + min;
+        System.out.println(minError);
     }
 
     private static void Ej3PartOne(double learningRate, int limit){

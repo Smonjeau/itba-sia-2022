@@ -15,7 +15,7 @@ public class LinealPerceptron {
         this.limit = limit;
     }
 
-    public List<Double> train(List<Row> rows) {
+    public double train(List<Row> rows) {
         this.rows = rows;
         Random random = new Random(System.currentTimeMillis());
         double error = rows.size() * 2;
@@ -53,8 +53,7 @@ public class LinealPerceptron {
             count++;
         }
 
-        System.out.println("Error promedio: " +minError/rows.size());
-        return minWeights;
+        return minError/rows.size();
     }
 
 
