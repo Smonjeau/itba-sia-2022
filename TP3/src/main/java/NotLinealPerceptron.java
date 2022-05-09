@@ -7,7 +7,7 @@ public class NotLinealPerceptron {
     private List<Row> rows;
     private final int dim;
     private final double learningRate;
-    private static final double DELTA = 0.001;
+    private static final double DELTA = 0.00001;
     private final int limit;
     private final double beta = 1;
     private double minError = 1;
@@ -54,8 +54,10 @@ public class NotLinealPerceptron {
 
             count++;
         }
-
-        return minError/rows.size();
+        System.out.println(weights);
+        System.out.println("err total " + calculateDenormalizedError(weights));
+        System.out.println("err promedio " + calculateDenormalizedError(weights)/rows.size());
+        return minError;
     }
 
 
@@ -74,6 +76,23 @@ public class NotLinealPerceptron {
             O = g(O);
 
             error += Math.pow(row.getExpectedValue() - O, 2);
+        }
+
+        return error/rows.size();
+    }
+    private double calculateDenormalizedError(List<Double> weights) {
+        double error = 0.0;
+        for (Row row : rows) {
+            Double O = 0.0;
+            for (int j = 0; j < dim; j++) {
+                O += weights.get(j) * row.getValues().get(j);
+            }
+
+            O = g(O);
+
+            O = (O + 1)*(99.3834 - 0.1558)/2 + 0.1558;
+            double expected=(row.getExpectedValue() + 1)*(99.3834 - 0.1558)/2 + 0.1558;
+            error += Math.pow(expected - O, 2);
         }
 
         return error;

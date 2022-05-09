@@ -53,7 +53,7 @@ public class LinealPerceptron {
             count++;
         }
 
-        return minError/rows.size();
+        return minError;
     }
 
 

@@ -112,9 +112,9 @@ public class Main {
         LinealPerceptron perceptron = new LinealPerceptron(inputs.get(0).size(), learningRate, limit);
         double minError = perceptron.train(rows);
 
-        System.out.println(minError);
-        minError = (minError + 1)*(max - min)/2.0 + min;
-        System.out.println(minError);
+        System.out.println("err total " +minError);
+//        minError = (minError + 1)*(max - min)/2.0 + min;
+        System.out.println( "err promedio " + minError/rows.size());
     }
 
     private static void Ej2NotLineal(double learningRate, int limit) throws IOException {
@@ -142,9 +142,9 @@ public class Main {
 
         NotLinealPerceptron perceptron = new NotLinealPerceptron(inputs.get(0).size(), learningRate, limit);
         double minError= perceptron.train(rows);
-        System.out.println(minError);
-        minError = (minError + 1)*(max - min)/2 + min;
-        System.out.println(minError);
+//        System.out.println(minError);
+//        minError = (minError + 1)*(max - min)/2 + min;
+//        System.out.println("err promedio "+minError);
     }
 
     private static void Ej3PartOne(double learningRate, int limit){

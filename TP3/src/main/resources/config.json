@@ -2,6 +2,6 @@
   "exercise": "notLinear",
   "bias": 0.5,
   "learningRate": 0.001,
-  "limit": 10000
+  "limit": 1000000
 
 }
