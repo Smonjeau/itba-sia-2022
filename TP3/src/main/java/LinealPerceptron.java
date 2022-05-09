@@ -18,7 +18,7 @@ public class LinealPerceptron {
     public double train(List<Row> rows) {
         this.rows = rows;
         Random random = new Random(System.currentTimeMillis());
-        double error = rows.size() * 2;
+        double error = Double.MAX_VALUE;
         int count = 0;
         double minError = error;
 

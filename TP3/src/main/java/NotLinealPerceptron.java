@@ -57,7 +57,7 @@ public class NotLinealPerceptron {
         System.out.println(weights);
         System.out.println("err total " + calculateDenormalizedError(weights));
         System.out.println("err promedio " + calculateDenormalizedError(weights)/rows.size());
-        return minError;
+        return calculateDenormalizedError(weights);
     }
 
 
@@ -78,7 +78,7 @@ public class NotLinealPerceptron {
             error += Math.pow(row.getExpectedValue() - O, 2);
         }
 
-        return error/rows.size();
+        return error;
     }
     private double calculateDenormalizedError(List<Double> weights) {
         double error = 0.0;

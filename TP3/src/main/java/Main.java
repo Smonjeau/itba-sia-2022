@@ -86,21 +86,21 @@ public class Main {
         System.out.println(minError);
     }
 
-    private static void Ej2Lineal(double learningRate, int limit) throws IOException {
+    static double Ej2Lineal(double learningRate, int limit) throws IOException {
         List<Double> outputs = readExpectedValues(EXPECTED_FILE_NAME_EJ2);
 
-        Double min = outputs.stream().min(Double::compare).orElse(0.0);
-        Double max = outputs.stream().max(Double::compare).orElse(0.0);
-
-        for (int i = 0; i < outputs.size(); i++) {
-            outputs.set(i, 2*(outputs.get(i) - min)/(max - min) - 1);
-        }
+//        Double min = outputs.stream().min(Double::compare).orElse(0.0);
+//        Double max = outputs.stream().max(Double::compare).orElse(0.0);
+//
+//        for (int i = 0; i < outputs.size(); i++) {
+//            outputs.set(i, 2*(outputs.get(i) - min)/(max - min) - 1);
+//        }
 
         List<List<Double>> inputs = readInputValues(INPUT_FILE_NAME_EJ2);
 
         if (inputs.size() != outputs.size()) {
             System.out.println("Invalid amount of inputs and expected outputs");
-            return;
+            return -1;
         }
 
         List<Row> rows = new ArrayList<>();
@@ -112,12 +112,14 @@ public class Main {
         LinealPerceptron perceptron = new LinealPerceptron(inputs.get(0).size(), learningRate, limit);
         double minError = perceptron.train(rows);
 
-        System.out.println("err total " +minError);
+//        System.out.println("err total " +minError);
 //        minError = (minError + 1)*(max - min)/2.0 + min;
-        System.out.println( "err promedio " + minError/rows.size());
+//        System.out.println( "err promedio " + minError/rows.size());
+
+        return minError;
     }
 
-    private static void Ej2NotLineal(double learningRate, int limit) throws IOException {
+    static double Ej2NotLineal(double learningRate, int limit) throws IOException {
         List<Double> outputs = readExpectedValues(EXPECTED_FILE_NAME_EJ2);
 
         Double min = outputs.stream().min(Double::compare).orElse(0.0);
@@ -131,7 +133,7 @@ public class Main {
 
         if (inputs.size() != outputs.size()) {
             System.out.println("Invalid amount of inputs and expected outputs");
-            return;
+            return -1;
         }
 
         List<Row> rows = new ArrayList<>();
@@ -145,6 +147,8 @@ public class Main {
 //        System.out.println(minError);
 //        minError = (minError + 1)*(max - min)/2 + min;
 //        System.out.println("err promedio "+minError);
+
+        return minError;
     }
 
     private static void Ej3PartOne(double learningRate, int limit){
