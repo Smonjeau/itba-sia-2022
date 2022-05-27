@@ -12,7 +12,7 @@ def get_neighbours(W, k, R, pos):
     # Get distance between two points
     for i in range(len(W)):
         dist = math.dist(pos, [i%k, i//k])
-        if dist <= R and pos != [i%k, i//k]: # TODO: chequear si winner es vecino de si mismo
+        if dist <= R and pos != [i%k, i//k]:
             neighbours.append(i)
             
     return neighbours
@@ -27,12 +27,13 @@ def kohonen(X, k, iterations=None, R=None, alpha=0.001):
     if iterations is None:
         iterations = (k**2)*500
 
+    alpha = 0.9
+    alpha_rate = (alpha - 0.0005)/iterations
+
     # Initialize radius to matrix full size
-    # if R is None:
-    #     R = (2*k**2)**(1/2)
-    #     # R = 2**(1/2)
-    # radius_rate = 2*R/iterations
-    R = 1
+    if R is None:
+        R = (2*k**2)**(1/2)
+    radius_rate = R/iterations
 
     while iterations > 0:
         # Randomly select a point from X
@@ -46,8 +47,11 @@ def kohonen(X, k, iterations=None, R=None, alpha=0.001):
         neighbours = get_neighbours(W, k, R, [winner%k, winner//k])
 
         # Update radius
-        # if R > 1:
-        #     R -= radius_rate
+        if R > 1:
+            R -= radius_rate
+
+        if alpha > 0.0005:
+            alpha -= alpha_rate
 
         # Update weights
         for index in neighbours:
