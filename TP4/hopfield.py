@@ -22,6 +22,8 @@ class Hopfield:
     def test(self, test_pattern):
 
         self.neurons_states = test_pattern
+        self.history = []
+
         global converged
         counter = 0
         while True:
@@ -40,6 +42,8 @@ class Hopfield:
                         break
 
                 if converged:
+                    self.history.append(self.neurons_states[:])
+
                     break
 
             else:
