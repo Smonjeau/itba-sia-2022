@@ -9,6 +9,7 @@ class Hopfield:
         self.stored_patterns.extend(patterns)
         self.weights = np.zeros((size, size))
         self.neurons_states = []
+        self.history = []
         self.calculate_weights()
 
     def calculate_weights(self):
@@ -25,11 +26,13 @@ class Hopfield:
         counter = 0
         while True:
             counter += 1
+            self.history.append(self.neurons_states[:])
             if counter > 1:
                 prev = []
                 prev.extend(self.neurons_states)
 
                 self.neurons_states = np.sign(np.matmul(self.weights, self.neurons_states))
+
                 converged = True
                 for i in range(len(prev)):
                     if prev[i] != self.neurons_states[i]:
@@ -42,5 +45,5 @@ class Hopfield:
             else:
                 self.neurons_states = np.sign(np.matmul(self.weights, self.neurons_states))
 
-            print(counter)
-        print(counter)
+            if counter > 2000:
+                break
