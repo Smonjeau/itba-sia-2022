@@ -44,7 +44,16 @@ def tanh(x):
     return np.tanh(x*beta)   
 autoencoder = Autoencoder(3,[3,5,2],2,tanh)
 
-print(autoencoder.weights)
-print(len(autoencoder.weights))
+
 autoencoder.encode([-1.2,1.12,-0.1],-1)
 print(autoencoder.neurons_values)
+for i in range(len(autoencoder.neurons_values)):
+    print(len(autoencoder.neurons_values[i]))
+print("Decoding...")
+autoencoder.decode()
+print("After Decode")
+print(autoencoder.neurons_values)
+for i in range(len(autoencoder.neurons_values)):
+    print(len(autoencoder.neurons_values[i]))
+
+
