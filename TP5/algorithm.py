@@ -2,6 +2,7 @@ import numpy as np
 import scipy.optimize as sco
 import random
 import matplotlib.pyplot as plt
+import pandas as pd
 
 class Autoencoder:
     def __init__(self, neurons_per_layer, train_set, output_set, beta):
@@ -76,7 +77,7 @@ class Autoencoder:
     def callback(self,weights):
         self.epoch += 1
         if self.epoch % 10 == 0:
-            print("Epoch: {} Error: {}".format(str(self.epoch), self.error(weights)*2/len(self.train_set)))
+            print("Epoch: {} Error promedio: {}".format(str(self.epoch), self.error(weights)*2/len(self.train_set)))
         else:
             print("Epoch: {}".format(self.epoch))
 
@@ -92,7 +93,7 @@ class Autoencoder:
             method='Powell', 
             callback=self.callback, 
             options={'maxiter': 100}, 
-            tol=1e-30
+            tol=1e-20
         ).x
 
         return trained_weights
@@ -192,6 +193,31 @@ def generateLatentSpaceFigure(x,y,autoencoder):
     plt.imshow(output, cmap='gray')
     plt.show()
 
+def dump_csv(weights):
+
+    file = open('data.csv', 'w')
+
+    file.write('layer,neuron,weights\n')
+
+    for i in range(len(weights)):
+        for j in range(len(weights[i])):
+            file.write('{},{},"{}"\n'.format(i,j, ','.join(str(x) for x in weights[i][j])))
+
+    file.close()
+
+def load_csv():
+
+    df = pd.read_csv('data.csv', sep=',')
+
+    weights = []
+
+    for group, data in df.groupby('layer'):
+        weights.append([])
+        for i in range(len(data)):
+            weights[-1].append([float(x) for x in data.iloc[i]['weights'].split(',')])
+
+    return weights
+
 def main():
     
     # ej1a4()
@@ -218,6 +244,8 @@ def main():
 
     weights = autoencoder.train()
     final_weights = autoencoder.unflatten_weights(weights)
+
+    dump_csv(final_weights)
 
     print(final_weights)
     print(autoencoder.error(weights)*2/len(input))
