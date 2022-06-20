@@ -1,4 +1,5 @@
 from enum import auto
+from re import A
 import numpy as np
 
 from autoencoder import Autoencoder
@@ -39,21 +40,61 @@ font_3 = np.array([
    ])
 
 
+def to_bin_array(encoded_caracter):
+    bin_array = np.zeros((7, 5), dtype=int)
+    for row in range(0, 7):
+        current_row = encoded_caracter[row]
+        for col in range(0, 5):
+            bin_array[row][4-col] = current_row & 1
+            current_row >>= 1
+    return bin_array.flatten()
+
+
+all_inputs = []
+
+for font in font_3:
+    all_inputs.append(to_bin_array(font))
+
+
+inputs = [[1.0,-1.0,1.0],[-1.0,-1.0,1.0],[1.0,1.0,1.0]]
+
+
 beta = 1
 def tanh(x):
-    return np.tanh(x*beta)   
-autoencoder = Autoencoder(3,[3,5,2],2,tanh)
+    return np.tanh(x*beta)
+def relu(x):
+    return np.maximum(0, x)       
+autoencoder = Autoencoder(len(all_inputs[0]),[70,15],2,relu)
+weights_qty=0
+for weight in autoencoder.weights:
+    weights_qty += len(weight)*len(weight[0])
+    #print(weight)
+
+print(weights_qty)
+
+#print(autoencoder.weights)
+autoencoder.train(all_inputs[0:15],all_inputs[0:15])
+
+#autoencoder.train(inputs,inputs)
+
+#for inp in all_inputs:#
+ #   print(inp)
 
 
-autoencoder.encode([-1.2,1.12,-0.1],-1)
-print(autoencoder.neurons_values)
-for i in range(len(autoencoder.neurons_values)):
-    print(len(autoencoder.neurons_values[i]))
-print("Decoding...")
-autoencoder.decode()
-print("After Decode")
-print(autoencoder.neurons_values)
-for i in range(len(autoencoder.neurons_values)):
-    print(len(autoencoder.neurons_values[i]))
+print("-------------------------------")
+for weight in autoencoder.weights:
+    weights_qty += len(weight)*len(weight[0])
+  #  print(weight)    
+
+
+#print(autoencoder.neurons_values)
+#for i in range(len(autoencoder.neurons_values)):
+#    print(len(autoencoder.neurons_values[i]))
+#print("Decoding...")
+#autoencoder.decode()
+#print("After Decode")
+#print(autoencoder.neurons_values)
+#for i in range(len(autoencoder.neurons_values)):
+#    print(len(autoencoder.neurons_values[i]))
 
 
