@@ -63,6 +63,15 @@ class Autoencoder:
 
         return input
 
+    def encode(self,input_set):
+
+        output=[]
+        output.extend(input_set)
+        for i in range(self.latent_index+1):
+            activation = np.dot(output, self.weights[i].T)
+            output = self.activation_functions[i](activation)
+
+        return output
     def decode(self,input_set):
         output=np.array(input_set).reshape(1,2)
         for i in range(self.latent_index+1,len(self.weights)):
