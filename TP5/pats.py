@@ -77,8 +77,8 @@ for pat in pats:
 
     autoencoder = Autoencoder(neurons_per_layer, subset, subset, 1)
     print("Training...")
-    autoencoder.train()
-    errors.append(autoencoder.errors_per_step[-1])
+    w = autoencoder.train()
+    errors.append(autoencoder.error(w)/len(subset))
 
 print(errors)
 
