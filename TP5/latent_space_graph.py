@@ -1,8 +1,4 @@
-from algorithm import load_csv
 from algorithm import Autoencoder
-import random
-from algorithm import font_3
-from algorithm import to_bin_array
 import matplotlib.pyplot as plt
 import numpy as np
 neurons_per_layer = [20, 10, 2,10,20]
