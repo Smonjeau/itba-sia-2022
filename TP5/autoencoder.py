@@ -1,7 +1,7 @@
 from operator import ne
 from scipy.optimize import minimize
 import numpy as np
-from qiskit.algorithms.optimizers import ADAM
+# from qiskit.algorithms.optimizers import ADAM
 class Autoencoder:
     def __init__(self, input_size, hidden_layers_size,latent_space_size,activation_function):
         self.input_size = input_size
@@ -25,9 +25,9 @@ class Autoencoder:
         #la parte del encoder
         for i in range(len(self.hidden_layers_size)):
             if i == 0:
-                weights.append(np.random.randn(self.input_size+1,self.hidden_layers_size[i]))
+                weights.append(np.random.randn(self.input_size+1, self.hidden_layers_size[i]))
             else:
-                weights.append(np.random.randn(self.hidden_layers_size[i-1],self.hidden_layers_size[i]))
+                weights.append(np.random.randn(self.hidden_layers_size[i-1], self.hidden_layers_size[i]))
 
         #espacio latente
         if len(weights) == 0:
