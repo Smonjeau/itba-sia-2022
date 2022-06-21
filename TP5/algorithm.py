@@ -20,12 +20,11 @@ class Autoencoder:
         self.tol = tol
 
         for i in range(len(self.weights)):
-            if i == len(self.weights) - 1:
-                self.activation_functions.append(lambda x: np.tanh(x))
-            elif i == self.latent_index:
+            if i <= self.latent_index:
                 self.activation_functions.append(lambda x: x)
             else:
-                self.activation_functions.append(lambda x: np.where(x > 0, x, 0))
+                self.activation_functions.append(lambda x: 1 / (1 + np.exp(-2*self.beta * x)))
+                
 
     def init_weights(self):
         self.weights = [np.array([]) for _ in range(len(self.neurons_per_layer))]
@@ -57,10 +56,10 @@ class Autoencoder:
     def evaluate(self, input, weights):
         for i in range(len(weights)):
             activation = np.dot(input, weights[i].T)
-            if i == len(weights) - 1:
-                input = np.tanh(activation)
-            elif i != int(len(weights)/2):
-                input = np.where(activation > 0, activation, 0)
+            if i <= int(len(weights)/2 - 1):
+                input = activation
+            else:
+                input = 1 / (1 + np.exp(-2 * activation))
 
         return input
 
