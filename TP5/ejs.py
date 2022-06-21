@@ -2,7 +2,7 @@ from cmath import tanh
 import numpy as np
 import matplotlib.pyplot as plt
 import random
-from utils import get_input_fonts, load_csv, dump_csv, font_3
+from utils import get_input_fonts, load_csv, dump_csv, font_3,to_bin_array
 from algorithm import Autoencoder
 
 def ej1a4():
@@ -22,6 +22,8 @@ def ej1b():
     all_inputs = get_input_fonts()
     autoencoder = Autoencoder(neurons_per_layer, all_inputs, all_inputs, 1)
 
+    autoencoder.weights= load_csv('TP5/weights.csv')
+
     total_errors=[]
     for i in range(0, 10):
         noise=i/(10*2)
@@ -30,14 +32,14 @@ def ej1b():
         output=[]
         aux=[]
         for font in range(len(font_3)):
-            aux.append(to_bin_array(font))
-            for char in range(len(font_3[font])):
-                for char_row in range(len(font_3[font][char])):
+            aux.append(to_bin_array(all_inputs[font]))
+            for char in range(7):
+                for char_row in range(5):
                     if random.random()<noise:
-                        if aux[font][char][char_row]==1:
-                            aux[font][char][char_row]=0
+                        if aux[font][char*5+char_row]==1:
+                            aux[font][char*5+char_row]=0
                         else:
-                            aux[font][char][char_row]=1
+                            aux[font][char*5+char_row]=1
                         
         
         output=aux
@@ -46,10 +48,13 @@ def ej1b():
             output = autoencoder.activation_functions[i](activation)
 
         error = np.sum(np.power(output - expected, 2))
+        total_errors.append(error)
 
+
+    noise_levels = [i/(10*2) for i in range(0, 10)]
     plt.clf()
-    total_errors.append(error)
-    plt.plot(total_errors,np.arange(0,5,0.5))
+    
+    plt.plot( noise_levels,total_errors)
     plt.xlabel('Noise')
     plt.ylabel('Total Error')
     plt.title('Noise vs Total Error')

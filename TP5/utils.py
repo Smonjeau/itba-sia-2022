@@ -68,11 +68,13 @@ def load_csv(filename='data.csv'):
 
     df = pd.read_csv(filename, sep=',')
 
-    weights = np.array([])
+    weights = []
 
     for group, data in df.groupby('layer'):
-        weights.append(np.array([]))
+        weights.append([])
         for i in range(len(data)):
-            weights[-1].append(np.array([float(x) for x in data.iloc[i]['weights'].split(',')]))
+            weights[-1].append(np.array([float(x) for x in data.iloc[i]['weights'].split(',')], dtype=float))
+
+        weights[-1] = np.array(weights[-1], dtype=float)
 
     return weights
