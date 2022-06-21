@@ -65,15 +65,17 @@ class Autoencoder:
         return input
 
     def decode(self,input_set):
-        output=[]
-        for i in range(self.latent_index,len(self.weights)):
+        output=np.array(input_set).reshape(1,2)
+        for i in range(self.latent_index+1,len(self.weights)):
             activation = np.dot(output, self.weights[i].T)
             output = self.activation_functions[i](activation)
         for i in range(len(output)):
-            if output[i] > 0.5 : 
-                output[i]=1 
-            else :
-                output[i]=0
+            for j in range(len(output[i])):
+                
+                if output[i][j] > 0.5 : 
+                    output[i][j]=1 
+                else :
+                    output[i][j]=0
         return output
 
     def unflatten_weights(self, array):

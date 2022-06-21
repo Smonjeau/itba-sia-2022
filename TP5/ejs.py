@@ -1,10 +1,21 @@
+from cmath import tanh
 import numpy as np
 import matplotlib.pyplot as plt
 import random
 from utils import get_input_fonts, load_csv, dump_csv, font_3
+from algorithm import Autoencoder
 
 def ej1a4():
-    generateLatentSpaceFigure()
+
+    neurons_per_layer = [20, 10, 2, 10, 20]
+    all_inputs = get_input_fonts()
+    autoencoder = Autoencoder(neurons_per_layer, all_inputs, all_inputs, 1)
+    # autoencoder = Autoencoder(len(all_inputs[0]),[20,10],2,lambda x: tanh(x))
+
+    autoencoder.weights= load_csv('TP5/weights.csv')
+
+
+    generateLatentSpaceFigure(1,1,autoencoder)
 
 def ej1b():
     neurons_per_layer = [20, 10, 5, 10, 20]
@@ -46,7 +57,7 @@ def ej1b():
 
 def generateLatentSpaceFigure(x,y,autoencoder):
     
-    output=autoencoder.decode(x,y)
+    output=autoencoder.decode([x,y])
     # output=[0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,1,1,1,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0]
     # print(len(output))
     output=np.array(output)
@@ -54,3 +65,6 @@ def generateLatentSpaceFigure(x,y,autoencoder):
     plt.clf()
     plt.imshow(output, cmap='gray')
     plt.show()
+
+def main():
+    ej1a4()
